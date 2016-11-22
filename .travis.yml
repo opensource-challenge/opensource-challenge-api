@@ -1,0 +1,11 @@
+language: elixir
+
+elixir:
+  - 1.3
+otp_release:
+  - 19
+
+sudo: false
+
+addons:
+  postgresql: '9.4'

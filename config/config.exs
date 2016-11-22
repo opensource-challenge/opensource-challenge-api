@@ -13,7 +13,7 @@ config :opensource_challenge,
 config :opensource_challenge, OpensourceChallenge.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "yilBDYvHCHT8tcgL1IpekRd4xw0CRDGzuMMjYtCK1bjh64ZjDjtGMrC0blHA9HL9",
-  render_errors: [view: OpensourceChallenge.ErrorView, accepts: ~w(json)],
+  render_errors: [view: OpensourceChallenge.ErrorView, accepts: ~w(json json-api)],
   pubsub: [name: OpensourceChallenge.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -21,6 +21,24 @@ config :opensource_challenge, OpensourceChallenge.Endpoint,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
+
+config :phoenix, :format_encoders,
+  "json-api": Poison
+
+config :plug, :mimes, %{
+  "application/vnd.api+json" => ["json-api"]
+}
+
+config :guardian, Guardian,
+  allowed_algos: ["HS512"],
+  verify_module: Guardian.JWT,
+  issuer: "OpenSource Challenge",
+  ttl: { 30, :days },
+  verify_issuer: true,
+  secret_key:
+    System.get_env("GUARDIAN_SECRET") ||
+    "VlZNEDbJYO1qSs3ajKCB1Cjq4PR4U7schtl7bbXSe4fVyZjf2DGrTtO3NF0Eg",
+  serializer: OpensourceChallenge.GuardianSerializer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
