@@ -10,7 +10,8 @@ defmodule OpensourceChallenge.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: Coverex.Task, coveralls: true, log: :debug]]
   end
 
   # Configuration for the OTP application.
@@ -38,7 +39,8 @@ defmodule OpensourceChallenge.Mixfile do
      {:comeonin, "~> 2.4"},
      {:guardian, "~> 0.13.0"},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:coverex, "~> 1.4.10", only: :test}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
