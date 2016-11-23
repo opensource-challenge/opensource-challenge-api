@@ -7,7 +7,15 @@ otp_release:
 
 sudo: false
 
-script: "MIX_ENV=test mix do deps.get, deps.compile, ecto.migrate, test --cover"
+before_script:
+  - mix do deps.get, deps.compile
+  - mix do ecto.create, ecto.migrate
+
+script:
+  - mix test --cover
+
+env:
+  - MIX_ENV=test
 
 addons:
   postgresql: '9.4'
