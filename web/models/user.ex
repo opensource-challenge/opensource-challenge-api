@@ -8,6 +8,7 @@ defmodule OpensourceChallenge.User do
     field :picture, :string
     field :name, :string
     field :company, :string
+    field :admin, :boolean
 
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
@@ -20,7 +21,7 @@ defmodule OpensourceChallenge.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:email, :password, :password_confirmation, :website, :picture, :name, :company])
+    |> cast(params, [:email, :password, :password_confirmation, :website, :picture, :name, :company, :admin])
     |> validate_required([:email, :password, :password_confirmation, :name])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)

@@ -29,7 +29,8 @@ defmodule Mix.Tasks.OpensourceChallenge.CreateAdmin do
                                  name: username,
                                  email: email,
                                  password: password,
-                                 password_confirmation: confirm
+                                 password_confirmation: confirm,
+                                 admin: true
                                })
 
     repo.insert! changeset

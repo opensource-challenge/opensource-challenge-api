@@ -9,6 +9,7 @@ defmodule OpensourceChallenge.Repo.Migrations.CreateUser do
       add :picture, :string
       add :name, :string
       add :company, :string
+      add :admin, :boolean, default: false
 
       timestamps()
     end
