@@ -98,7 +98,7 @@ defmodule OpensourceChallenge.SessionController do
           password: dummy_pass,
           password_confirmation: dummy_pass,
           company: List.first(google_user["organizations"])["name"],
-          picture: google_user["image"]["url"]
+          picture: String.replace_suffix(google_user["image"]["url"], "sz=50", "sz=400")
         })
       end
 
