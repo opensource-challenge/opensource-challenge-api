@@ -20,7 +20,7 @@ defmodule OpensourceChallenge.Mixfile do
   def application do
     [mod: {OpensourceChallenge, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin]]
+                    :phoenix_ecto, :postgrex, :comeonin, :oauth2]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,6 +40,7 @@ defmodule OpensourceChallenge.Mixfile do
      {:guardian, "~> 0.13.0"},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
+     {:oauth2, "~> 0.8"},
      {:coverex, "~> 1.4.10", only: :test}]
   end
 
