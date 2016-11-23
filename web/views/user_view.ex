@@ -1,21 +1,11 @@
 defmodule OpensourceChallenge.UserView do
   use OpensourceChallenge.Web, :view
 
-  def render("index.json", %{users: users}) do
-    %{data: render_many(users, OpensourceChallenge.UserView, "user.json")}
-  end
+  attributes [:email, :website, :picture, :name, :company, :admin]
 
-  def render("show.json", %{user: user}) do
-    %{data: render_one(user, OpensourceChallenge.UserView, "user.json")}
-  end
+  has_many :contributions, link: :contributions_link
 
-  def render("user.json", %{user: user}) do
-    %{
-      type: "user",
-      id: user.id,
-      attributes: %{
-        email: user.email
-      }
-    }
+  def contributions_link(user, conn) do
+    user_contributions_url(conn, :index, user.id)
   end
 end

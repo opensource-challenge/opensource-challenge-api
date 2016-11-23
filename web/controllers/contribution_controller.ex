@@ -1,7 +1,16 @@
 defmodule OpensourceChallenge.ContributionController do
   use OpensourceChallenge.Web, :controller
+  import Ecto.Query
 
   alias OpensourceChallenge.Contribution
+
+  def index(conn, %{"user_id" => user_id}) do
+    contributions = Contribution
+                    |> where(user_id: ^user_id)
+                    |> Repo.all
+
+    render(conn, "index.json-api", data: contributions)
+  end
 
   def index(conn, _params) do
     contributions = Repo.all(Contribution)
