@@ -1,7 +1,7 @@
 defmodule OpensourceChallenge.SessionController do
   use OpensourceChallenge.Web, :controller
 
-  import Ecto.Query, only: [where: 2]
+  import Ecto.Query, only: [where: 2, where: 3]
   import Comeonin.Bcrypt
   import Logger
 
@@ -45,20 +45,21 @@ defmodule OpensourceChallenge.SessionController do
       }) do
     try do
       client = Github.OAuth2.get_token!(code: authorization_code)
-      user = OAuth2.Client.get!(client, "/user").body
+      github_user = OAuth2.Client.get!(client, "/user").body
       user = User
-             |> where(email: ^user["email"])
+             |> where(email: ^github_user["email"])
              |> Repo.one
 
       if !user do
         dummy_pass = random_pass
         user = Repo.insert! User.changeset(%User{}, %{
-          name: user["name"] || user["login"],
-          email: user["email"],
+          name: github_user["name"] || github_user["login"],
+          email: github_user["email"],
           password: dummy_pass,
           password_confirmation: dummy_pass,
-          company: user["company"],
-          picture: user["avatar_url"]
+          company: github_user["company"],
+          picture: github_user["avatar_url"],
+          website: github_user["blog"] || github_user["html_url"]
         })
       end
 
@@ -70,7 +71,46 @@ defmodule OpensourceChallenge.SessionController do
     rescue
       e ->
         IO.inspect e
-        Logger.error "Unexpected error while attempting to login with gitub login"
+        Logger.error "Unexpected error while attempting to login with github login"
+        conn
+        |> put_status(401)
+        |> render(OpensourceChallenge.ErrorView, "401.json")
+    end
+  end
+
+  def create(conn, %{
+        "grant_type" => "google",
+        "authorizationCode" => authorization_code,
+      }) do
+    try do
+      client = Google.OAuth2.get_token!(code: authorization_code)
+      google_user = OAuth2.Client.get!(client, "/plus/v1/people/me").body
+      emails = Enum.map(google_user["emails"], fn(email) -> email["value"] end)
+      user = User
+             |> where([u], u.email in ^emails)
+             |> Repo.one
+
+      if !user do
+        dummy_pass = random_pass
+        user = Repo.insert! User.changeset(%User{}, %{
+          name: google_user["displayName"] || google_user["nickname"] || google_user["name"]["formatted"],
+          email: List.first(emails),
+          password: dummy_pass,
+          password_confirmation: dummy_pass,
+          company: List.first(google_user["organizations"])["name"],
+          picture: google_user["image"]["url"]
+        })
+      end
+
+      Logger.info "User #{user.email} just logged in"
+
+      {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
+      conn
+      |> json(%{access_token: jwt})
+    rescue
+      e ->
+        IO.inspect e
+        Logger.error "Unexpected error while attempting to login with google login"
         conn
         |> put_status(401)
         |> render(OpensourceChallenge.ErrorView, "401.json")
