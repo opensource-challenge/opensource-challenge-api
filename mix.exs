@@ -11,7 +11,7 @@ defmodule OpensourceChallenge.Mixfile do
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
      deps: deps(),
-     test_coverage: [tool: Coverex.Task, coveralls: true, log: :debug]]
+     test_coverage: [tool: Coverex.Task, coveralls: true]]
   end
 
   # Configuration for the OTP application.
