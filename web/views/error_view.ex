@@ -26,8 +26,8 @@ defmodule OpensourceChallenge.ErrorView do
   end
 
   def template_not_found(template, assigns) do
-    {code, ".json"} = template
-                      |> Integer.parse
+    {code, _} = template
+                |> Integer.parse
 
     render "500.json", Map.put(assigns, :code, code)
   end
