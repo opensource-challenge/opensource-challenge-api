@@ -4,9 +4,9 @@ defmodule Google.OAuth2 do
   def client do
     OAuth2.Client.new([
       strategy: __MODULE__,
-      client_id: System.get_env("GOOGLE_CLIENT_ID") || "586953290562-c896enmb9em22uv4bc4p63h97pp111h3.apps.googleusercontent.com",
-      client_secret: System.get_env("GOOGLE_CLIENT_SECRET") || "LkAB93OxLLOtiioQn7lWi5hO",
-      redirect_uri: System.get_env("GOOGLE_REDIRECT_URI") || "http://localhost:4200/",
+      client_id: Application.get_env(:oauth2, :google)[:client_id],
+      client_secret: Application.get_env(:oauth2, :google)[:client_secret],
+      redirect_uri: Application.get_env(:oauth2, :google)[:redirect_uri],
       site: "https://www.googleapis.com",
       authorize_url: "https://accounts.google.com/o/oauth2/auth",
       token_url: "https://accounts.google.com/o/oauth2/token"

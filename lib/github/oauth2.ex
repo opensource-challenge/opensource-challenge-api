@@ -4,9 +4,9 @@ defmodule Github.OAuth2 do
   def client do
     OAuth2.Client.new([
       strategy: __MODULE__,
-      client_id: System.get_env("GITHUB_CLIENT_ID") || "c8992decd49d183b23d7",
-      client_secret: System.get_env("GITHUB_CLIENT_SECRET") || "b7d210b9d6e69c608322a04d47a575f846b80c7f",
-      redirect_uri: System.get_env("GITHUB_REDIRECT_URI"),
+      client_id: Application.get_env(:oauth2, :github)[:client_id],
+      client_secret: Application.get_env(:oauth2, :github)[:client_secret],
+      redirect_uri: Application.get_env(:oauth2, :github)[:redirect_uri],
       site: "https://api.github.com",
       authorize_url: "https://github.com/login/oauth/authorize",
       token_url: "https://github.com/login/oauth/access_token"
