@@ -55,7 +55,15 @@ config :logger, level: :info
 #
 #     config :opensource_challenge, OpensourceChallenge.Endpoint, server: true
 #
+config :opensource_challenge, OpensourceChallenge.Endpoint,
+  secret_key_base: System.get_env("PHOENIX_SECRET_KEY_BASE") ||
+    "JfjuF1TzVv+5tEe+L3NCv53XANQOnatLCpMJFSp7IklZqTImlDWrbvBhzXzmIZVx"
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+# Configure your database
+config :opensource_challenge, OpensourceChallenge.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  hostname: System.get_env("DB_HOSTNAME") || "localhost",
+  username: System.get_env("DB_USERNAME") || "postgres",
+  password: System.get_env("DB_PASSWORD") || "postgres",
+  database: System.get_env("DB_DATABASE") || "opensource_challenge_prod",
+  pool_size: 20
