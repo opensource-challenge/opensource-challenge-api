@@ -25,7 +25,7 @@ config :logger, :console,
 config :phoenix, :format_encoders,
   "json-api": Poison
 
-config :plug, :mimes, %{
+config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
