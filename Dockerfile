@@ -20,4 +20,4 @@ COPY . /usr/src/app/
 RUN mix compile
 RUN mix compile.protocols
 
-CMD mix ecto.migrate && elixir -pa _build/prod/consolidated -S mix phoenix.server
+CMD mix do ecto.create, ecto.migrate && elixir -pa _build/prod/consolidated -S mix phoenix.server
