@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - '8080:8080'
+    environment:
+      - PORT=8080
+      - DB_HOSTNAME=db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=opensource_challenge_prod
+      - PHOENIX_SECRET_KEY_BASE=JfjuF1TzVv+5tEe+L3NCv53XANQOnatLCpMJFSp7IklZqTImlDWrbvBhzXzmIZVx
+      - GUARDIAN_SECRET=VlZNEDbJYO1qSs3ajKCB1Cjq4PR4U7schtl7bbXSe4fVyZjf2DGrTtO3NF0Eg
+      - GITHUB_CLIENT_ID=c8992decd49d183b23d7
+      - GITHUB_CLIENT_SECRET=b7d210b9d6e69c608322a04d47a575f846b80c7f
+      - GITHUB_REDIRECT_URI=https://opensource-challenge.ch/
+      - GOOGLE_CLIENT_ID=586953290562-c896enmb9em22uv4bc4p63h97pp111h3.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=LkAB93OxLLOtiioQn7lWi5hO
+      - GOOGLE_REDIRECT_URI=https://opensource-challenge.ch/
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=opensource_challenge_prod
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
