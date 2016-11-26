@@ -19,6 +19,12 @@ defmodule OpensourceChallenge.Router do
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
 
+    get "/challenges/current", ChallengeController, :current
+    resources "/challenges", ChallengeController, only: [:show, :index] do
+      get "/contributions", ContributionController, :index, as: :contributions
+      get "/users", UserController, :index, as: :users
+    end
+
     resources "/users", UserController, only: [:show, :index] do
       get "/contributions", ContributionController, :index, as: :contributions
     end

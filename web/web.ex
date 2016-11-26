@@ -29,6 +29,7 @@ defmodule OpensourceChallenge.Web do
   def controller do
     quote do
       use Phoenix.Controller
+      use JaResource
 
       alias OpensourceChallenge.Repo
       import Ecto
@@ -41,7 +42,6 @@ defmodule OpensourceChallenge.Web do
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
       use JaSerializer.PhoenixView
 
       # Import convenience functions from controllers

@@ -1,42 +1,36 @@
 defmodule OpensourceChallenge.ContributionController do
   use OpensourceChallenge.Web, :controller
+
+  plug JaResource
+
   import Ecto.Query
 
   alias OpensourceChallenge.Contribution
 
-  def index(conn, %{"user_id" => user_id}) do
-    contributions = Contribution
-                    |> where(user_id: ^user_id)
-                    |> Repo.all
-
-    render(conn, "index.json-api", data: contributions)
+  def handle_index(conn, %{"user_id" => user_id}) do
+    handle_index(conn, %{})
+    |> where(user_id: ^user_id)
   end
 
-  def index(conn, _params) do
-    contributions = Repo.all(Contribution)
-
-    render(conn, "index.json-api", data: contributions)
+  def handle_index(conn, %{"challenge_id" => challenge_id}) do
+    handle_index(conn, %{})
+    |> where(challenge_id: ^challenge_id)
   end
 
-  def show(conn, %{"id" => id}) do
-    contribution = Repo.get!(Contribution, id)
+  def handle_index(_conn, %{"include" => include}) do
+    includes = include
+               |> String.split(",")
+               |> Enum.map(&String.to_atom/1)
 
-    render(conn, "show.json-api", data: contribution)
+    Contribution
+    |> preload(^includes)
   end
 
-  def create(conn, %{"data" => data}) do
-    attrs = JaSerializer.Params.to_attributes(data)
-    changeset = Contribution.changeset(%Contribution{}, attrs)
+  def handle_index(_conn, _params) do
+    Contribution
+  end
 
-    case Repo.insert(changeset) do
-      {:ok, contribution} ->
-        conn
-        |> put_status(201)
-        |> render("show.json-api", data: contribution)
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(OpensourceChallenge.ChangesetView, "error.json", changeset: changeset)
-    end
+  def filter(_conn, query, "date", date) do
+    where(query, date: ^date)
   end
 end

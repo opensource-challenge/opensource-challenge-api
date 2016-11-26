@@ -20,7 +20,8 @@ defmodule OpensourceChallenge.Mixfile do
   def application do
     [mod: {OpensourceChallenge, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :oauth2]]
+                    :phoenix_ecto, :postgrex, :comeonin, :oauth2,
+                    :ja_resource]]
   end
 
   # Specifies which paths to compile per environment.
@@ -36,6 +37,7 @@ defmodule OpensourceChallenge.Mixfile do
      {:phoenix_ecto, "~> 3.0"},
      {:postgrex, ">= 0.0.0"},
      {:ja_serializer, "~> 0.11.1"},
+     {:ja_resource, "~> 0.1.0"},
      {:comeonin, "~> 2.4"},
      {:guardian, "~> 0.13.0"},
      {:gettext, "~> 0.11"},

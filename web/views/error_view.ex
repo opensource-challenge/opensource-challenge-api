@@ -25,6 +25,10 @@ defmodule OpensourceChallenge.ErrorView do
     render "500.json", %{code: 500}
   end
 
+  def render(template, assigns) do
+    template_not_found(template, assigns)
+  end
+
   def template_not_found(template, assigns) do
     {code, _} = template
                 |> Integer.parse

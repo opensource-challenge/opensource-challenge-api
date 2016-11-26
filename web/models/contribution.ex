@@ -1,11 +1,14 @@
 defmodule OpensourceChallenge.Contribution do
   use OpensourceChallenge.Web, :model
 
+  import Ecto.Query
+
   schema "contributions" do
     field :date, Ecto.Date
     field :link, :string
     field :description, :string
     belongs_to :user, OpensourceChallenge.User
+    belongs_to :challenge, OpensourceChallenge.Challenge
 
     timestamps()
   end

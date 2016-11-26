@@ -31,8 +31,4 @@ config :opensource_challenge, OpensourceChallenge.Repo,
   pool_size: 10
 
 config :opensource_challenge, :cors,
-  origin: [
-    "localhost",
-    "localhost:3000",
-    "localhost:4200"
-  ]
+  origin: "*"

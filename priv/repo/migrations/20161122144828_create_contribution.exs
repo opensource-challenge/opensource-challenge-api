@@ -5,7 +5,7 @@ defmodule OpensourceChallenge.Repo.Migrations.CreateContribution do
     create table(:contributions) do
       add :date, :date
       add :link, :string
-      add :description, :string
+      add :description, :text
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()

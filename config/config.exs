@@ -29,6 +29,9 @@ config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
+config :ja_resource,
+  repo: OpensourceChallenge.Repo
+
 config :guardian, Guardian,
   allowed_algos: ["HS512"],
   verify_module: Guardian.JWT,

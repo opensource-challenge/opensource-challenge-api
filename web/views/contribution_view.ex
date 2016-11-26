@@ -7,16 +7,12 @@ defmodule OpensourceChallenge.ContributionView do
     :description
   ]
 
-  #has_one :user,
-  #  serializer: OpensourceChallenge.UserSerializer,
-  #  include: false,
-  #  field: :user,
-  #  links: [
-  #    related: "/api/v1/user/:user_id",
-  #    self: "/api/v1/contributions/:id/user"
-  #  ]
+  has_one :user,
+    serializer: OpensourceChallenge.UserView,
+    identifiers: :when_included,
+    link: :user_link
 
-  def user_id(struct, _conn) do
-    struct.user_id
+  def user_link(contribution, conn) do
+    user_url(conn, :show, contribution.user_id)
   end
 end

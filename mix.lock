@@ -15,6 +15,7 @@
   "httpoison": {:hex, :httpoison, "0.10.0", "4727b3a5e57e9a4ff168a3c2883e20f1208103a41bccc4754f15a9366f49b676", [:mix], [{:hackney, "~> 1.6.3", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},
   "inflex": {:hex, :inflex, "1.8.0", "7cfc752ae244b30b42ac9cf4c092771b485bc3424139aba4a933e54be8c63931", [:mix], []},
+  "ja_resource": {:hex, :ja_resource, "0.1.0", "eed6443e7337147264bf28badabad48eb0cc32493ff06a48ac19d4b3657f5029", [:mix], [{:ecto, "~> 2.0", [hex: :ecto, optional: false]}, {:ja_serializer, "~> 0.9", [hex: :ja_serializer, optional: false]}, {:phoenix, "~> 1.1", [hex: :phoenix, optional: false]}, {:plug, "~> 1.2", [hex: :plug, optional: false]}]},
   "ja_serializer": {:hex, :ja_serializer, "0.11.1", "542301257f5e1dc86fc99d00bbefd9de0386e53e017b1a2b778c045dab0e580b", [:mix], [{:inflex, "~> 1.4", [hex: :inflex, optional: false]}, {:plug, "> 1.0.0", [hex: :plug, optional: false]}, {:poison, "~> 1.4 or ~> 2.0", [hex: :poison, optional: false]}, {:scrivener, "~> 1.2 or ~> 2.0", [hex: :scrivener, optional: true]}]},
   "jose": {:hex, :jose, "1.8.0", "1ee027c5c0ff3922e3bfe58f7891509e8f87f771ba609ee859e623cc60237574", [:mix, :rebar3], [{:base64url, "~> 0.0.1", [hex: :base64url, optional: false]}]},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
