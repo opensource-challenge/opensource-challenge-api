@@ -7,16 +7,6 @@ defmodule OpensourceChallenge.ContributionController do
 
   alias OpensourceChallenge.Contribution
 
-  def handle_index(conn, %{"user_id" => user_id}) do
-    handle_index(conn, %{})
-    |> where(user_id: ^user_id)
-  end
-
-  def handle_index(conn, %{"challenge_id" => challenge_id}) do
-    handle_index(conn, %{})
-    |> where(challenge_id: ^challenge_id)
-  end
-
   def handle_index(_conn, %{"include" => include}) do
     includes = include
                |> String.split(",")
@@ -28,6 +18,14 @@ defmodule OpensourceChallenge.ContributionController do
 
   def handle_index(_conn, _params) do
     Contribution
+  end
+
+  def filter(_conn, query, "user_id", user_id) do
+    where(query, user_id: ^user_id)
+  end
+
+  def filter(_conn, query, "challenge_id", challenge_id) do
+    where(query, challenge_id: ^challenge_id)
   end
 
   def filter(_conn, query, "date", date) do
