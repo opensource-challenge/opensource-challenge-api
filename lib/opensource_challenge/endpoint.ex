@@ -36,5 +36,7 @@ defmodule OpensourceChallenge.Endpoint do
     key: "_opensource_challenge_key",
     signing_salt: "VwIlFHVc"
 
+  plug CORSPlug,
+    origin: Application.get_env(:opensource_challenge, :cors)[:origin]
   plug OpensourceChallenge.Router
 end

@@ -67,3 +67,8 @@ config :opensource_challenge, OpensourceChallenge.Repo,
   password: System.get_env("DB_PASSWORD") || "postgres",
   database: System.get_env("DB_DATABASE") || "opensource_challenge_prod",
   pool_size: 20
+
+config :opensource_challenge, :cors,
+  origin: [
+    "opensource-challenge.ch"
+  ]

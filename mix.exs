@@ -41,6 +41,7 @@ defmodule OpensourceChallenge.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:oauth2, "~> 0.8"},
+     {:cors_plug, "~> 1.1"},
      {:coverex, "~> 1.4.10", only: :test}]
   end
 
