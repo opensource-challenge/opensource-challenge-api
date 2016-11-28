@@ -4,6 +4,8 @@ defmodule OpensourceChallenge.ContributionTest do
   alias OpensourceChallenge.Contribution
 
   @valid_attrs %{
+    user_id: 1,
+    challenge_id: 1,
     date: %{day: 17, month: 4, year: 2010},
     description: "some content",
     link: "https://github.com/topaxi/opensource-challenge-api"
