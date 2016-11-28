@@ -8,5 +8,5 @@ defimpl Canada.Can, for: User do
   def can?(%User{admin: admin}, action, _)
     when action in [:update, :delete], do: admin
 
-  def can?(%User{ id: user_id }, _, _), do: false
+  def can?(%User{id: user_id}, _, _), do: false
 end
