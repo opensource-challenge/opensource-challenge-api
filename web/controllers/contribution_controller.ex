@@ -1,13 +1,11 @@
 defmodule OpensourceChallenge.ContributionController do
   use OpensourceChallenge.Web, :controller
 
-  plug JaResource
-  plug :scrub_params, "contribution" when action in [:create, :update]
-  plug :authorize_resource, model: Contribution, except: [:show, :index]
-
-  import Ecto.Query
-
   alias OpensourceChallenge.Contribution
+
+  plug :scrub_params, "data" when action in [:create, :update]
+  plug :authorize_resource, model: Contribution, except: [:show, :index]
+  plug JaResource
 
   def handle_index(_conn, %{"include" => include}) do
     includes = include

@@ -43,7 +43,9 @@ config :guardian, Guardian,
     "VlZNEDbJYO1qSs3ajKCB1Cjq4PR4U7schtl7bbXSe4fVyZjf2DGrTtO3NF0Eg",
   serializer: OpensourceChallenge.GuardianSerializer
 
-config :canary, repo: OpensourceChallenge.Repo
+config :canary,
+  repo: OpensourceChallenge.Repo,
+  unauthorized_handler: {OpensourceChallenge.AuthErrorHandler, :unauthorized}
 
 config :oauth2, :github,
   client_id: System.get_env("GITHUB_CLIENT_ID") ||

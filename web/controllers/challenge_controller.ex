@@ -12,8 +12,8 @@ defmodule OpensourceChallenge.ChallengeController do
     includes = include
                |> String.split(",")
                |> Enum.map(&String.to_atom/1)
-    challenge = handle_current(conn, %{})
-                |> preload(^includes)
+    handle_current(conn, %{})
+    |> preload(^includes)
   end
 
   def handle_current(_conn, _params) do

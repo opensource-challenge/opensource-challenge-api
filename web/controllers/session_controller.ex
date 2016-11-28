@@ -24,7 +24,7 @@ defmodule OpensourceChallenge.SessionController do
           conn
           |> json(%{access_token: jwt})
         true ->
-          Logger.warning "User #{username} just failed to login"
+          Logger.warn "User #{username} just failed to login"
           conn
           |> put_status(401)
           |> render(OpensourceChallenge.ErrorView, "401.json")

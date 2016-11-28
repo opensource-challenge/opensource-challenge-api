@@ -3,9 +3,6 @@ defmodule OpensourceChallenge.UserController do
 
   plug JaResource
 
-  #plug Guardian.Plug.EnsureAuthenticated,
-  #  handler: OpensourceChallenge.AuthErrorHandler
-
   def current(conn, _) do
     user = conn
            |> Guardian.Plug.current_resource
