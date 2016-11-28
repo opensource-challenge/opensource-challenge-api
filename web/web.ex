@@ -34,6 +34,7 @@ defmodule OpensourceChallenge.Web do
       alias OpensourceChallenge.Repo
       import Ecto
       import Ecto.Query
+      import Canary.Plugs
 
       import OpensourceChallenge.Router.Helpers
       import OpensourceChallenge.Gettext
@@ -45,7 +46,11 @@ defmodule OpensourceChallenge.Web do
       use JaSerializer.PhoenixView
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
+      import Phoenix.Controller, only: [
+        get_csrf_token: 0,
+        get_flash: 2,
+        view_module: 1
+      ]
 
       import OpensourceChallenge.Router.Helpers
       import OpensourceChallenge.ErrorHelpers

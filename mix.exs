@@ -40,6 +40,7 @@ defmodule OpensourceChallenge.Mixfile do
      {:ja_resource, "~> 0.1.0"},
      {:comeonin, "~> 2.4"},
      {:guardian, "~> 0.13.0"},
+     {:canary, "~> 1.1.0"},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:oauth2, "~> 0.8"},

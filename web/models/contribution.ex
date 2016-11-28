@@ -18,7 +18,7 @@ defmodule OpensourceChallenge.Contribution do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :link, :description])
-    |> validate_required([:date, :description])
+    |> cast(params, [:user_id, :challenge_id, :date, :link, :description])
+    |> validate_required([:user_id, :challenge_id, :date, :description])
   end
 end

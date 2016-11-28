@@ -2,6 +2,8 @@ defmodule OpensourceChallenge.ContributionController do
   use OpensourceChallenge.Web, :controller
 
   plug JaResource
+  plug :scrub_params, "contribution" when action in [:create, :update]
+  plug :authorize_resource, model: Contribution, except: [:show, :index]
 
   import Ecto.Query
 
@@ -18,6 +20,12 @@ defmodule OpensourceChallenge.ContributionController do
 
   def handle_index(_conn, _params) do
     Contribution
+  end
+
+  def handle_create(%{assigns: %{current_user: user}}, attributes) do
+    attributes = Map.put(attributes, "user_id", user.id)
+    attributes = Map.put(attributes, "challenge_id", 2)
+    Contribution.changeset(%Contribution{}, attributes)
   end
 
   def filter(_conn, query, "user_id", user_id) do
