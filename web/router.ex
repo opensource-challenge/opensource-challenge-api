@@ -17,6 +17,14 @@ defmodule OpensourceChallenge.Router do
   end
 
   scope "/api/v1", OpensourceChallenge do
+    pipe_through :api_auth
+
+    get "/users/current", UserController, :current
+
+    resources "/contributions", ContributionController, only: [:create, :update]
+  end
+
+  scope "/api/v1", OpensourceChallenge do
     pipe_through :api
 
     post "/register", RegistrationController, :create
@@ -32,13 +40,5 @@ defmodule OpensourceChallenge.Router do
       get "/contributions", ContributionController, :index, as: :contributions
     end
     resources "/contributions", ContributionController, only: [:show, :index]
-  end
-
-  scope "/api/v1", OpensourceChallenge do
-    pipe_through :api_auth
-
-    get "/users/current", UserController, :current
-
-    resources "/contributions", ContributionController, only: [:create, :update]
   end
 end

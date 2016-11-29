@@ -8,6 +8,6 @@ defmodule OpensourceChallenge.UserController do
            |> Guardian.Plug.current_resource
 
     conn
-    |> render(OpensourceChallenge.UserView, "show.json-api", user: user)
+    |> render(OpensourceChallenge.UserView, "show.json-api", data: user)
   end
 end
