@@ -6,7 +6,7 @@ defmodule OpensourceChallenge.ContributionTest do
   @valid_attrs %{
     user_id: 1,
     challenge_id: 1,
-    date: %{day: 17, month: 4, year: 2010},
+    date: %{day: 17, month: 12, year: 2016},
     description: "some content",
     link: "https://github.com/topaxi/opensource-challenge-api"
   }
