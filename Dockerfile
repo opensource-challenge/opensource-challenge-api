@@ -1,5 +1,7 @@
 FROM elixir:1.3
 
+EXPOSE 8080
+
 RUN useradd -md /usr/src/app -u 1001 phoenix-app
 USER 1001
 
