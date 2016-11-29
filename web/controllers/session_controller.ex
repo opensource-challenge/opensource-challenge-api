@@ -47,7 +47,7 @@ defmodule OpensourceChallenge.SessionController do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
       user = User
-             |> where(github_user: ^github_user["login"])
+             |> where(github_login: ^github_user["login"])
              |> Repo.one
 
       if !user do
