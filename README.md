@@ -1,4 +1,4 @@
-# OpensourceChallengeAPI [![Build Status](https://api.travis-ci.org/topaxi/opensource-challenge-api.svg?branch=master)](https://travis-ci.org/topaxi/opensource-challenge-api) [![Coverage Status](https://coveralls.io/repos/github/topaxi/opensource-challenge-api/badge.svg?branch=master)](https://coveralls.io/github/topaxi/opensource-challenge-api?branch=master)
+# OpensourceChallengeAPI [![Build Status](https://api.travis-ci.org/opensource-challenge/opensource-challenge-api.svg?branch=master)](https://travis-ci.org/opensource-challenge/opensource-challenge-api) [![Coverage Status](https://coveralls.io/repos/github/opensource-challenge/opensource-challenge-api/badge.svg?branch=master)](https://coveralls.io/github/opensource-challenge/opensource-challenge-api?branch=master)
 
 To start your Phoenix app:
 
