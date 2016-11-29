@@ -3,6 +3,8 @@ defmodule OpensourceChallenge.ErrorHelpers do
   Conveniences for translating and building error messages.
   """
 
+  alias OpensourceChallenge.Gettext
+
   @doc """
   Translates an error message using gettext.
   """
@@ -21,9 +23,9 @@ defmodule OpensourceChallenge.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(OpensourceChallenge.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(OpensourceChallenge.Gettext, "errors", msg, opts)
+      Gettext.dgettext(Gettext, "errors", msg, opts)
     end
   end
 end

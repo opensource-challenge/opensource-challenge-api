@@ -34,7 +34,8 @@ Repo.insert! %User{
   email: "damian.senn@topaxi.codes",
   github_login: "topaxi",
   website: "https://topaxi.codes/",
-  picture: "https://www.gravatar.com/avatar/cd7bcb83925455b9e1fc8048dc3b29ac.jpg?s=512",
+  picture: "https://www.gravatar.com/avatar/" <>
+           "cd7bcb83925455b9e1fc8048dc3b29ac.jpg?s=512",
   name: "Damian Senn",
   company: "Puzzle ITC GmbH",
   admin: true

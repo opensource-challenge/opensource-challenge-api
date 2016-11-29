@@ -15,6 +15,8 @@ defmodule OpensourceChallenge.ChannelCase do
 
   use ExUnit.CaseTemplate
 
+  alias OpensourceChallenge.Repo
+
   using do
     quote do
       # Import conveniences for testing with channels
@@ -32,10 +34,10 @@ defmodule OpensourceChallenge.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(OpensourceChallenge.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(OpensourceChallenge.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
     end
 
     :ok

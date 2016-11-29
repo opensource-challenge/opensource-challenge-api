@@ -1,4 +1,8 @@
 defmodule Google.OAuth2 do
+  @moduledoc """
+  Login and authorize users with google oauth2
+  """
+
   use OAuth2.Strategy
 
   def client do

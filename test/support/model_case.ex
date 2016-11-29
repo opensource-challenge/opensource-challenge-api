@@ -14,6 +14,8 @@ defmodule OpensourceChallenge.ModelCase do
 
   use ExUnit.CaseTemplate
 
+  alias OpensourceChallenge.Repo
+
   using do
     quote do
       alias OpensourceChallenge.Repo
@@ -26,10 +28,10 @@ defmodule OpensourceChallenge.ModelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(OpensourceChallenge.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(OpensourceChallenge.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
     end
 
     :ok
@@ -48,7 +50,7 @@ defmodule OpensourceChallenge.ModelCase do
 
   You could then write your assertion like:
 
-      assert {:password, "is unsafe"} in errors_on(%User{}, %{password: "password"})
+      assert {:password, "is unsafe"} in errors_on(%User{}, %{password: "pw"})
 
   You can also create the changeset manually and retrieve the errors
   field directly:
@@ -58,8 +60,11 @@ defmodule OpensourceChallenge.ModelCase do
       true
   """
   def errors_on(struct, data) do
-    struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&OpensourceChallenge.ErrorHelpers.translate_error/1)
+    struct
+    |> struct.__struct__.changeset(data)
+    |> Ecto.Changeset.traverse_errors(
+      &OpensourceChallenge.ErrorHelpers.translate_error/1
+    )
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end

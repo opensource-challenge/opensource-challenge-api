@@ -12,10 +12,15 @@ defmodule OpensourceChallenge.ChallengeController do
     includes = include
                |> String.split(",")
                |> Enum.map(&String.to_atom/1)
-    handle_current(conn, %{})
+    conn
+    |> handle_current(%{})
     |> preload(^includes)
   end
 
+  def handle_current(_conn, _params) do
+    Challenge
+    |> where([c], c.id == 2)
+  end
   def handle_current(_conn, _params) do
     now = DateTime.from_erl(:erlang.localtime)
     Challenge
@@ -24,7 +29,8 @@ defmodule OpensourceChallenge.ChallengeController do
   end
 
   def current(conn, params) do
-    challenge = handle_current(conn, params)
+    challenge = conn
+                |> handle_current(params)
                 |> Repo.one!
     render(conn, "show.json-api", data: challenge, opts: [
              include: params["include"]

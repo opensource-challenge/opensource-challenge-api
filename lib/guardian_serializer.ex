@@ -1,4 +1,7 @@
 defmodule OpensourceChallenge.GuardianSerializer do
+  @moduledoc """
+  Serialize and deserialize guardian tokens
+  """
   @behaviour Guardian.Serializer
 
   alias OpensourceChallenge.Repo

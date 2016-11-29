@@ -4,7 +4,9 @@ defmodule OpensourceChallenge.ContributionController do
   alias OpensourceChallenge.Contribution
 
   plug :scrub_params, "data" when action in [:create, :update]
-  plug :authorize_resource, model: Contribution, except: [:show, :index, :create]
+  plug :authorize_resource,
+    model: Contribution,
+    except: [:show, :index, :create]
   plug JaResource
 
   def handle_index(_conn, %{"include" => include}) do

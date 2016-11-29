@@ -12,8 +12,12 @@ config :opensource_challenge,
 # Configures the endpoint
 config :opensource_challenge, OpensourceChallenge.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "yilBDYvHCHT8tcgL1IpekRd4xw0CRDGzuMMjYtCK1bjh64ZjDjtGMrC0blHA9HL9",
-  render_errors: [view: OpensourceChallenge.ErrorView, accepts: ~w(json json-api)],
+  secret_key_base:
+    "yilBDYvHCHT8tcgL1IpekRd4xw0CRDGzuMMjYtCK1bjh64ZjDjtGMrC0blHA9HL9",
+  render_errors: [
+    view: OpensourceChallenge.ErrorView,
+    accepts: ~w(json json-api)
+  ],
   pubsub: [name: OpensourceChallenge.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

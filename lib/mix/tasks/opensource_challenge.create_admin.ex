@@ -16,10 +16,10 @@ defmodule Mix.Tasks.OpensourceChallenge.CreateAdmin do
     ensure_repo(repo, args)
     ensure_started(repo, [])
 
-    username = Mix.shell.prompt("Username:") |> String.strip
-    email    = Mix.shell.prompt("Email:") |> String.strip
-    password = password_get("Password:") |> String.strip
-    confirm  = password_get("Password (confirm):") |> String.strip
+    username = "Username:" |> Mix.shell.prompt |> String.strip
+    email    = "Email:" |> Mix.shell.prompt |> String.strip
+    password = "Password:" |> password_get |> String.strip
+    confirm  = "Password (confirm):" |> password_get |> String.strip
 
     if password != confirm do
       Mix.raise "Entered passwords do not match"

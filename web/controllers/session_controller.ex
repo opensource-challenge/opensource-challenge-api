@@ -32,7 +32,7 @@ defmodule OpensourceChallenge.SessionController do
     rescue
       e ->
         IO.inspect e
-        Logger.error "Unexpected error while attempting to login user #{username}"
+        Logger.error "Unexpected error while attempting to login #{username}"
         conn
         |> put_status(401)
         |> render(OpensourceChallenge.ErrorView, "401.json")
@@ -50,7 +50,7 @@ defmodule OpensourceChallenge.SessionController do
              |> where(github_login: ^github_user["login"])
              |> Repo.one
 
-      if !user do
+      unless user do
         dummy_pass = random_pass
         user = Repo.insert! User.changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
@@ -72,58 +72,65 @@ defmodule OpensourceChallenge.SessionController do
     rescue
       e ->
         IO.inspect e
-        Logger.error "Unexpected error while attempting to login with github login"
+        Logger.error "Unexpected error while attempting to login with github"
         conn
         |> put_status(401)
         |> render(OpensourceChallenge.ErrorView, "401.json")
     end
   end
 
-  #def create(conn, %{
-  #      "grant_type" => "google",
-  #      "authorizationCode" => authorization_code,
-  #    }) do
-  #  try do
-  #    client = Google.OAuth2.get_token!(code: authorization_code)
-  #    google_user = OAuth2.Client.get!(client, "/plus/v1/people/me").body
-  #    emails = Enum.map(google_user["emails"], fn(email) -> email["value"] end)
-  #    user = User
-  #           |> where([u], u.email in ^emails)
-  #           |> Repo.one
+  # def create(conn, %{
+  #       "grant_type" => "google",
+  #       "authorizationCode" => authorization_code,
+  #     }) do
+  #   try do
+  #     client = Google.OAuth2.get_token!(code: authorization_code)
+  #     google_user = OAuth2.Client.get!(client, "/plus/v1/people/me").body
+  #     emails = Enum.map(google_user["emails"],
+  #                       fn(email) -> email["value"] end)
+  #     user = User
+  #            |> where([u], u.email in ^emails)
+  #            |> Repo.one
 
-  #    if !user do
-  #      dummy_pass = random_pass
-  #      user = Repo.insert! User.changeset(%User{}, %{
-  #        name: google_user["displayName"] || google_user["nickname"] || google_user["name"]["formatted"],
-  #        google_login: google_user["id"],
-  #        email: List.first(emails),
-  #        password: dummy_pass,
-  #        password_confirmation: dummy_pass,
-  #        company: List.first(google_user["organizations"])["name"],
-  #        picture: String.replace_suffix(google_user["image"]["url"], "sz=50", "sz=400")
-  #      })
-  #    end
+  #     if !user do
+  #       dummy_pass = random_pass
+  #       user = Repo.insert! User.changeset(%User{}, %{
+  #         name: google_user["displayName"] ||
+  #           google_user["nickname"] ||
+  #           google_user["name"]["formatted"],
+  #         google_login: google_user["id"],
+  #         email: List.first(emails),
+  #         password: dummy_pass,
+  #         password_confirmation: dummy_pass,
+  #         company: List.first(google_user["organizations"])["name"],
+  #         picture: google_user["image"]["url"]
+  #                  |> String.replace_suffix("sz=50", "sz=400")
+  #       })
+  #     end
 
-  #    Logger.info "User #{user.email} just logged in"
+  #     Logger.info "User #{user.email} just logged in"
 
-  #    {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
-  #    conn
-  #    |> json(%{access_token: jwt})
-  #  rescue
-  #    e ->
-  #      IO.inspect e
-  #      Logger.error "Unexpected error while attempting to login with google login"
-  #      conn
-  #      |> put_status(401)
-  #      |> render(OpensourceChallenge.ErrorView, "401.json")
-  #  end
-  #end
+  #     {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
+  #     conn
+  #     |> json(%{access_token: jwt})
+  #   rescue
+  #     e ->
+  #       IO.inspect e
+  #       Logger.error "Unexpected error while attempting to login with google"
+  #       conn
+  #       |> put_status(401)
+  #       |> render(OpensourceChallenge.ErrorView, "401.json")
+  #   end
+  # end
 
   def create(_conn, %{"grant_type" => grant_type}) do
     throw "Unsupported grant_type #{grant_type}"
   end
 
-  defp random_pass() do
-    :crypto.strong_rand_bytes(255) |> Base.url_encode64 |> binary_part(0, 255)
+  defp random_pass do
+    255
+    |> :crypto.strong_rand_bytes
+    |> Base.url_encode64
+    |> binary_part(0, 255)
   end
 end

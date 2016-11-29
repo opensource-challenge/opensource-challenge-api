@@ -29,7 +29,9 @@ defmodule OpensourceChallenge.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(OpensourceChallenge.ChangesetView, "error.json", changeset: changeset)
+        |> render(OpensourceChallenge.ChangesetView, "error.json",
+          changeset: changeset
+        )
     end
   end
 end
