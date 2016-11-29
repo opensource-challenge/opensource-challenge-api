@@ -3,6 +3,8 @@ defmodule OpensourceChallenge.User do
 
   schema "users" do
     field :email, :string
+    field :github_login, :string
+    field :google_login, :string
     field :password_hash, :string
     field :website, :string
     field :picture, :string
@@ -21,7 +23,18 @@ defmodule OpensourceChallenge.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:email, :password, :password_confirmation, :website, :picture, :name, :company, :admin])
+    |> cast(params, [
+      :email,
+      :github_login,
+      :google_login,
+      :password,
+      :password_confirmation,
+      :website,
+      :picture,
+      :name,
+      :company,
+      :admin
+    ])
     |> validate_required([:email, :password, :password_confirmation, :name])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)

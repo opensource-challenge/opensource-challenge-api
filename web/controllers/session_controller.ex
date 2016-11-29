@@ -47,13 +47,14 @@ defmodule OpensourceChallenge.SessionController do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
       user = User
-             |> where(email: ^github_user["email"])
+             |> where(github_user: ^github_user["login"])
              |> Repo.one
 
       if !user do
         dummy_pass = random_pass
         user = Repo.insert! User.changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
+          github_login: github_user["login"],
           email: github_user["email"],
           password: dummy_pass,
           password_confirmation: dummy_pass,
@@ -78,44 +79,45 @@ defmodule OpensourceChallenge.SessionController do
     end
   end
 
-  def create(conn, %{
-        "grant_type" => "google",
-        "authorizationCode" => authorization_code,
-      }) do
-    try do
-      client = Google.OAuth2.get_token!(code: authorization_code)
-      google_user = OAuth2.Client.get!(client, "/plus/v1/people/me").body
-      emails = Enum.map(google_user["emails"], fn(email) -> email["value"] end)
-      user = User
-             |> where([u], u.email in ^emails)
-             |> Repo.one
+  #def create(conn, %{
+  #      "grant_type" => "google",
+  #      "authorizationCode" => authorization_code,
+  #    }) do
+  #  try do
+  #    client = Google.OAuth2.get_token!(code: authorization_code)
+  #    google_user = OAuth2.Client.get!(client, "/plus/v1/people/me").body
+  #    emails = Enum.map(google_user["emails"], fn(email) -> email["value"] end)
+  #    user = User
+  #           |> where([u], u.email in ^emails)
+  #           |> Repo.one
 
-      if !user do
-        dummy_pass = random_pass
-        user = Repo.insert! User.changeset(%User{}, %{
-          name: google_user["displayName"] || google_user["nickname"] || google_user["name"]["formatted"],
-          email: List.first(emails),
-          password: dummy_pass,
-          password_confirmation: dummy_pass,
-          company: List.first(google_user["organizations"])["name"],
-          picture: String.replace_suffix(google_user["image"]["url"], "sz=50", "sz=400")
-        })
-      end
+  #    if !user do
+  #      dummy_pass = random_pass
+  #      user = Repo.insert! User.changeset(%User{}, %{
+  #        name: google_user["displayName"] || google_user["nickname"] || google_user["name"]["formatted"],
+  #        google_login: google_user["id"],
+  #        email: List.first(emails),
+  #        password: dummy_pass,
+  #        password_confirmation: dummy_pass,
+  #        company: List.first(google_user["organizations"])["name"],
+  #        picture: String.replace_suffix(google_user["image"]["url"], "sz=50", "sz=400")
+  #      })
+  #    end
 
-      Logger.info "User #{user.email} just logged in"
+  #    Logger.info "User #{user.email} just logged in"
 
-      {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
-      conn
-      |> json(%{access_token: jwt})
-    rescue
-      e ->
-        IO.inspect e
-        Logger.error "Unexpected error while attempting to login with google login"
-        conn
-        |> put_status(401)
-        |> render(OpensourceChallenge.ErrorView, "401.json")
-    end
-  end
+  #    {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
+  #    conn
+  #    |> json(%{access_token: jwt})
+  #  rescue
+  #    e ->
+  #      IO.inspect e
+  #      Logger.error "Unexpected error while attempting to login with google login"
+  #      conn
+  #      |> put_status(401)
+  #      |> render(OpensourceChallenge.ErrorView, "401.json")
+  #  end
+  #end
 
   def create(_conn, %{"grant_type" => grant_type}) do
     throw "Unsupported grant_type #{grant_type}"
