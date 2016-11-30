@@ -46,6 +46,7 @@ defmodule OpensourceChallenge.SessionController do
     try do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
+      IO.inspect github_user
       user = User
              |> where(github_login: ^github_user["login"])
              |> Repo.one
@@ -58,8 +59,19 @@ defmodule OpensourceChallenge.SessionController do
                    |> Map.fetch!("email")
             email -> email
           end
+        IO.inspect email
 
         dummy_pass = random_pass
+        IO.inspect %{
+          name: github_user["name"] || github_user["login"],
+          github_login: github_user["login"],
+          email: email,
+          password: dummy_pass,
+          password_confirmation: dummy_pass,
+          company: github_user["company"],
+          picture: github_user["avatar_url"],
+          website: github_user["blog"] || github_user["html_url"]
+        }
         user = Repo.insert! User.changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
           github_login: github_user["login"],
