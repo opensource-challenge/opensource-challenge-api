@@ -51,11 +51,19 @@ defmodule OpensourceChallenge.SessionController do
              |> Repo.one
 
       unless user do
+        email =
+          case github_user["email"] do
+            nil -> OAuth2.Client.get!(client, "/user/emails").body
+                   |> Enum.find(fn(email) -> email["primary"] end)
+                   |> Map.fetch!("email")
+            email -> email
+          end
+
         dummy_pass = random_pass
         user = Repo.insert! User.changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
           github_login: github_user["login"],
-          email: github_user["email"] || "dummy@example.com",
+          email: email,
           password: dummy_pass,
           password_confirmation: dummy_pass,
           company: github_user["company"],
