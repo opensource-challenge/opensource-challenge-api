@@ -18,6 +18,10 @@ defmodule OpensourceChallenge.ChallengeController do
   end
 
   def handle_current(_conn, _params) do
+    Challenge
+    |> where([c], c.id == 2)
+  end
+  def handle_current(_conn, _params) do
     now = DateTime.from_erl(:erlang.localtime)
     Challenge
     |> where([c], c.starts_on < ^now)
