@@ -55,7 +55,7 @@ defmodule OpensourceChallenge.SessionController do
         user = Repo.insert! User.changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
           github_login: github_user["login"],
-          email: github_user["email"],
+          email: github_user["email"] || "dummy@example.com",
           password: dummy_pass,
           password_confirmation: dummy_pass,
           company: github_user["company"],
