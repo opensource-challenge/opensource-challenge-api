@@ -18,7 +18,7 @@ defmodule Github.OAuth2 do
   end
 
   def authorize_url! do
-    OAuth2.Client.authorize_url!(client(), scope: "user,email,public_repo")
+    OAuth2.Client.authorize_url!(client(), scope: "user:email")
   end
 
   # you can pass options to the underlying http library via `opts` parameter
