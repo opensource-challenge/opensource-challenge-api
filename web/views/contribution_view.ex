@@ -2,6 +2,7 @@ defmodule OpensourceChallenge.ContributionView do
   use OpensourceChallenge.Web, :view
 
   attributes [
+    :title,
     :date,
     :link,
     :description
