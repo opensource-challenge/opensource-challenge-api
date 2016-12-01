@@ -7,6 +7,7 @@ defmodule OpensourceChallenge.Contribution do
   import Ecto.Query
 
   schema "contributions" do
+    field :title, :string
     field :date, Ecto.Date
     field :link, :string
     field :description, :string
@@ -21,7 +22,7 @@ defmodule OpensourceChallenge.Contribution do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :challenge_id, :date, :link, :description])
+    |> cast(params, [:user_id, :challenge_id, :title, :date, :link, :description])
     |> validate_required([:user_id, :challenge_id, :date, :description])
     |> validate_contribution_date
   end
