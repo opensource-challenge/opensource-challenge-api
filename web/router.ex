@@ -21,7 +21,8 @@ defmodule OpensourceChallenge.Router do
 
     get "/users/current", UserController, :current
 
-    resources "/contributions", ContributionController, only: [:create, :update]
+    resources "/contributions", ContributionController,
+      only: [:create, :update, :delete]
   end
 
   scope "/api/v1", OpensourceChallenge do
