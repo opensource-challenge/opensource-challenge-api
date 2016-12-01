@@ -5,7 +5,8 @@ defmodule OpensourceChallenge.ContributionView do
     :title,
     :date,
     :link,
-    :description
+    :description,
+    :inserted_at
   ]
 
   has_one :user,
