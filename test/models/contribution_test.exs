@@ -7,6 +7,7 @@ defmodule OpensourceChallenge.ContributionTest do
     user_id: 1,
     challenge_id: 1,
     date: %{day: 17, month: 12, year: 2016},
+    title: "Some contribution",
     description: "some content",
     link: "https://github.com/topaxi/opensource-challenge-api"
   }

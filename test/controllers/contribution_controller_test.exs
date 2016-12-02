@@ -33,6 +33,7 @@ defmodule OpensourceChallenge.ContributionControllerTest do
     contribution = Repo.insert!(Contribution.changeset %Contribution{}, %{
       date: %Ecto.Date{year: 2016, month: 12, day: 1},
       link: "",
+      title: "Contribution title",
       description: "Contribution description",
       user_id: user_id,
       challenge_id: challenge_id
@@ -50,10 +51,11 @@ defmodule OpensourceChallenge.ContributionControllerTest do
   end
 
   test "deleting someone elses contribution",
-      %{conn: conn, jwt: jwt, user_id: user_id, challenge_id: challenge_id} do
+      %{conn: conn, user_id: user_id, challenge_id: challenge_id} do
     contribution = Repo.insert!(Contribution.changeset %Contribution{}, %{
       date: %Ecto.Date{year: 2016, month: 12, day: 1},
       link: "",
+      title: "Contribution title",
       description: "Contribution description",
       user_id: user_id,
       challenge_id: challenge_id
