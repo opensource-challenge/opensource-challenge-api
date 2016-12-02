@@ -1,7 +1,7 @@
 defmodule OpensourceChallenge.UserView do
   use OpensourceChallenge.Web, :view
 
-  attributes [:email, :website, :picture, :name, :company, :admin]
+  attributes [:website, :picture, :name, :company, :admin]
 
   has_many :contributions, link: :contributions_link
 
