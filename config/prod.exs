@@ -56,6 +56,7 @@ config :logger, level: :info
 #     config :opensource_challenge, OpensourceChallenge.Endpoint, server: true
 #
 config :opensource_challenge, OpensourceChallenge.Endpoint,
+  url: [scheme: "https"],
   secret_key_base: System.get_env("PHOENIX_SECRET_KEY_BASE") ||
     "JfjuF1TzVv+5tEe+L3NCv53XANQOnatLCpMJFSp7IklZqTImlDWrbvBhzXzmIZVx"
 
