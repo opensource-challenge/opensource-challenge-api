@@ -56,7 +56,7 @@ config :logger, level: :info
 #     config :opensource_challenge, OpensourceChallenge.Endpoint, server: true
 #
 config :opensource_challenge, OpensourceChallenge.Endpoint,
-  url: [scheme: "https", port: 443],
+  url: [scheme: "https", host: "www.opensource-challenge.ch", port: 443],
   secret_key_base: System.get_env("PHOENIX_SECRET_KEY_BASE") ||
     "JfjuF1TzVv+5tEe+L3NCv53XANQOnatLCpMJFSp7IklZqTImlDWrbvBhzXzmIZVx"
 
@@ -71,5 +71,6 @@ config :opensource_challenge, OpensourceChallenge.Repo,
 
 config :opensource_challenge, :cors,
   origin: [
-    "opensource-challenge.ch"
+    "opensource-challenge.ch",
+    "www.opensource-challenge.ch"
   ]
