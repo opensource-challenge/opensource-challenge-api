@@ -18,6 +18,16 @@ defmodule OpensourceChallenge.ContributionController do
     |> preload(^includes)
   end
 
+  def handle_index(_conn, %{"challenge_id" => challenge_id}) do
+    Contribution
+    |> where(challenge_id: ^challenge_id)
+  end
+
+  def handle_index(_conn, %{"user_id" => user_id}) do
+    Contribution
+    |> where(user_id: ^user_id)
+  end
+
   def handle_index(_conn, _params) do
     Contribution
   end
