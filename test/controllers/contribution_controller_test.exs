@@ -5,6 +5,15 @@ defmodule OpensourceChallenge.ContributionControllerTest do
   alias OpensourceChallenge.User
   alias OpensourceChallenge.Contribution
 
+  @valid_attrs %{
+    title: "Some contribution",
+    date: %Ecto.Date{year: 2016, month: 12, day: 1},
+    description: "Did a contribution"
+  }
+
+  @invalid_attrs %{
+  }
+
   setup %{conn: conn} do
     user = Repo.insert!(User.changeset %User{}, %{
       name: "Damian",
@@ -25,7 +34,38 @@ defmodule OpensourceChallenge.ContributionControllerTest do
       challenge_id: challenge.id,
       user_id: user.id,
       jwt: jwt,
-      conn: put_req_header(conn, "accept", "application/vnd.api+json")}
+      conn: conn
+            |> put_req_header("accept", "application/vnd.api+json")
+            |> put_req_header("content-type", "application/vnd.api+json")}
+  end
+
+  test "creates and renders resource when data is valid",
+      %{conn: conn, jwt: jwt} do
+    conn = conn
+    |> put_req_header("authorization", "Bearer #{jwt}")
+    |> post(contribution_path(conn, :create), %{
+      data: %{
+        type: "contributions",
+        attributes: @valid_attrs
+      }
+    })
+
+    assert json_response(conn, 201)["data"]["id"]
+    assert Repo.get(Contribution, json_response(conn, 201)["data"]["id"])
+  end
+
+  test "does not create resource and renders errors when data is invalid",
+      %{conn: conn, jwt: jwt} do
+    conn = conn
+    |> put_req_header("authorization", "Bearer #{jwt}")
+    |> post(contribution_path(conn, :create), %{
+      data: %{
+        type: "contributions",
+        attributes: @invalid_attrs
+      }
+    })
+
+    assert json_response(conn, 422)
   end
 
   test "deleting own contribution",
