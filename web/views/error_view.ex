@@ -16,6 +16,11 @@ defmodule OpensourceChallenge.ErrorView do
     |> JaSerializer.ErrorSerializer.format
   end
 
+  def render("415.json", _assigns) do
+    %{title: "Unsupported Media Type", code: 415}
+    |> JaSerializer.ErrorSerializer.format
+  end
+
   def render("500.json", %{code: code}) do
     %{title: "Internal Server Error", code: code}
     |> JaSerializer.ErrorSerializer.format

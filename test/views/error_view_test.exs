@@ -13,6 +13,11 @@ defmodule OpensourceChallenge.ErrorViewTest do
            %{"errors" => [%{code: 403, title: "Forbidden"}]}
   end
 
+  test "renders 415.json" do
+    assert render(OpensourceChallenge.ErrorView, "415.json", []) ==
+           %{"errors" => [%{code: 415, title: "Unsupported Media Type"}]}
+  end
+
   test "render 500.json" do
     assert render(OpensourceChallenge.ErrorView, "500.json", []) ==
            %{"errors" => [%{code: 500, title: "Internal Server Error"}]}
