@@ -2,7 +2,7 @@ defmodule OpensourceChallenge.UserSocket do
   use Phoenix.Socket
 
   # Channels
-  # channel "room:*", OpensourceChallenge.RoomChannel
+  channel "room:*", OpensourceChallenge.RoomChannel
 
   # Transports
   transport :websocket, Phoenix.Transports.WebSocket

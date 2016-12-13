@@ -2,6 +2,7 @@ defmodule OpensourceChallenge.ContributionController do
   use OpensourceChallenge.Web, :controller
 
   alias OpensourceChallenge.Contribution
+  alias OpensourceChallenge.ContributionService
 
   plug :scrub_params, "data" when action in [:create, :update]
   plug :authorize_resource,
@@ -35,7 +36,7 @@ defmodule OpensourceChallenge.ContributionController do
   def handle_create(%{assigns: %{current_user: user}}, attributes) do
     attributes = Map.put(attributes, "user_id", user.id)
     attributes = Map.put(attributes, "challenge_id", 2)
-    Contribution.changeset(%Contribution{}, attributes)
+    ContributionService.create_contribution(attributes)
   end
 
   def filter(_conn, query, "user_id", user_id) do
