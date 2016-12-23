@@ -13,8 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :opensource_challenge, OpensourceChallenge.Endpoint,
   http: [port: {:system, "PORT"}, compress: true],
-  url: [host: "opensource-challenge.ch", port: 80],
-  cache_static_manifest: "priv/static/manifest.json"
+  url: [host: "opensource-challenge.ch", port: 80]
 
 # Do not print debug messages in production
 config :logger, level: :info
