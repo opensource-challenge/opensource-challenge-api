@@ -31,12 +31,13 @@ defmodule OpensourceChallenge.Contribution do
     date = Changeset.get_field(changeset, :date)
 
     if date > Date.from_erl(:erlang.date) do
-      add_error(changeset, :date,
+      changeset = add_error(changeset, :date,
                 "Date cannot be in the future")
     end
 
-    if date > {2016, 12, 24} || date < {2016, 12, 1} do
-      add_error(changeset, :date,
+    if date > %Ecto.Date{year: 2016, month: 12, day: 24} ||
+        date < %Ecto.Date{year: 2016, month: 12, day: 1} do
+      changeset = add_error(changeset, :date,
                 "Date must be between 2016-12-01 and 2016-12-24")
     end
 

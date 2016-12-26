@@ -22,4 +22,26 @@ defmodule OpensourceChallenge.ContributionTest do
     changeset = Contribution.changeset(%Contribution{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "changeset date after challenge" do
+    changeset = Contribution.changeset(%Contribution{}, %{
+                                         date: %{
+                                           day: 25,
+                                           month: 12,
+                                           year: 2016
+                                         }
+                                       })
+    assert Keyword.has_key?(changeset.errors, :date)
+  end
+
+  test "changeset date before challenge" do
+    changeset = Contribution.changeset(%Contribution{}, %{
+                                         date: %{
+                                           day: 30,
+                                           month: 11,
+                                           year: 2016
+                                         }
+                                       })
+    assert Keyword.has_key?(changeset.errors, :date)
+  end
 end
