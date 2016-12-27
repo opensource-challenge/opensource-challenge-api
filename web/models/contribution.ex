@@ -3,16 +3,19 @@ defmodule OpensourceChallenge.Contribution do
 
   alias Ecto.Date
   alias Ecto.Changeset
+  alias OpensourceChallenge.Repo
+  alias OpensourceChallenge.User
+  alias OpensourceChallenge.Challenge
 
   import Ecto.Query
 
   schema "contributions" do
     field :title, :string
-    field :date, Ecto.Date
+    field :date, Date
     field :link, :string
     field :description, :string
-    belongs_to :user, OpensourceChallenge.User
-    belongs_to :challenge, OpensourceChallenge.Challenge
+    belongs_to :user, User
+    belongs_to :challenge, Challenge
 
     timestamps()
   end
@@ -35,10 +38,18 @@ defmodule OpensourceChallenge.Contribution do
                 "Date cannot be in the future")
     end
 
-    if date > %Ecto.Date{year: 2016, month: 12, day: 24} ||
-        date < %Ecto.Date{year: 2016, month: 12, day: 1} do
-      changeset = add_error(changeset, :date,
-                "Date must be between 2016-12-01 and 2016-12-24")
+    challenge_id = Changeset.get_field(changeset, :challenge_id)
+    if challenge_id do
+      challenge = Repo.get!(Challenge, challenge_id)
+
+      if date > challenge.ends_on || date < challenge.starts_on do
+        changeset = add_error(changeset, :date,
+                  "Date must be between " <>
+                  "#{Date.to_iso8601(challenge.starts_on)} and " <>
+                  "#{Date.to_iso8601(challenge.ends_on)}",
+                  starts_on: challenge.starts_on,
+                  ends_on: challenge.ends_on)
+      end
     end
 
     changeset
