@@ -4,10 +4,7 @@ defmodule OpensourceChallenge.Contribution do
   alias Ecto.Date
   alias Ecto.Changeset
   alias OpensourceChallenge.Repo
-  alias OpensourceChallenge.User
   alias OpensourceChallenge.Challenge
-
-  import Ecto.Query
 
   schema "contributions" do
     field :title, :string
@@ -33,7 +30,7 @@ defmodule OpensourceChallenge.Contribution do
   defp validate_contribution_date(changeset) do
     date = Changeset.get_field(changeset, :date)
 
-    if date > Date.from_erl(:erlang.date) do
+    if date && Ecto.Date.compare(date, Date.from_erl(:erlang.date)) == :gt do
       changeset = add_error(changeset, :date,
                 "Date cannot be in the future")
     end
