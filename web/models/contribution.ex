@@ -4,6 +4,7 @@ defmodule OpensourceChallenge.Contribution do
   alias Ecto.Date
   alias Ecto.Changeset
   alias OpensourceChallenge.Repo
+  alias OpensourceChallenge.User
   alias OpensourceChallenge.Challenge
 
   schema "contributions" do
