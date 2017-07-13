@@ -46,7 +46,7 @@ defmodule OpensourceChallenge.Mixfile do
      {:oauth2, "~> 0.8"},
      {:cors_plug, "~> 1.1"},
      {:dogma, "~> 0.1", only: :dev},
-     {:coverex, "~> 1.4.10", only: :test}]
+     {:coverex, "1.4.13", only: :test}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
