@@ -21,13 +21,15 @@ Repo.insert! %Challenge{
   name: "Thömus Open Source Advents Challenge 2015",
   shortname: "advent-2015",
   starts_on: %Date{year: 2015, month: 12, day: 1},
-  ends_on: %Date{year: 2015, month: 12, day: 24}
+  ends_on: %Date{year: 2015, month: 12, day: 24},
+  closed: true
 }
 Repo.insert! %Challenge{
   name: "Damians Open Source Advents Challenge 2016",
   shortname: "advent-2016",
   starts_on: %Date{year: 2016, month: 12, day: 1},
-  ends_on: %Date{year: 2016, month: 12, day: 24}
+  ends_on: %Date{year: 2016, month: 12, day: 24},
+  closed: false
 }
 
 Repo.insert! %User{

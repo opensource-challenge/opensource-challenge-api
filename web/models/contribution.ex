@@ -25,19 +25,49 @@ defmodule OpensourceChallenge.Contribution do
     struct
     |> cast(params, [:user_id, :challenge_id, :title, :date, :link, :description])
     |> validate_required([:user_id, :challenge_id, :title, :date, :description])
+    |> validate_challenge_not_closed
     |> validate_contribution_date
   end
 
   defp validate_contribution_date(changeset) do
-    date = Changeset.get_field(changeset, :date)
+    changeset
+    |> validate_contribution_date_not_future
+    |> validate_contribution_date_in_challenge
+  end
 
-    if date && Ecto.Date.compare(date, Date.from_erl(:erlang.date)) == :gt do
-      changeset = add_error(changeset, :date,
-                "Date cannot be in the future")
+  defp validate_challenge_not_closed(changeset) do
+    challenge_id = Changeset.get_field(changeset, :challenge_id)
+
+    if challenge_id do
+      challenge = Repo.get!(Challenge, challenge_id)
+
+      if challenge.closed do
+        changeset = add_error(changeset, :challenge_id,
+                              "Cannot add contribution to closed challenge")
+      end
     end
 
-    challenge_id = Changeset.get_field(changeset, :challenge_id)
-    if challenge_id do
+    changeset
+  end
+
+  defp validate_contribution_date_not_future(changeset) do
+    date = Changeset.get_field(changeset, :date)
+
+    if date do
+      case Date.compare(date, Date.from_erl(:erlang.date)) do
+        :gt -> add_error(changeset, :date, "Date cannot be in the future")
+        _ -> changeset
+      end
+    else
+      changeset
+    end
+  end
+
+  defp validate_contribution_date_in_challenge(changeset) do
+    date = Changeset.get_field(changeset, :date)
+
+    if date do
+      challenge_id = Changeset.get_field(changeset, :challenge_id)
       challenge = Repo.get!(Challenge, challenge_id)
 
       if date > challenge.ends_on || date < challenge.starts_on do

@@ -7,7 +7,8 @@ defmodule OpensourceChallenge.ChallengeTest do
     ends_on: %{day: 17, month: 4, year: 2010},
     name: "some challenge",
     shortname: "some-2010",
-    starts_on: %{day: 17, month: 4, year: 2010}
+    starts_on: %{day: 17, month: 4, year: 2010},
+    closed: false
   }
   @invalid_attrs %{}
 

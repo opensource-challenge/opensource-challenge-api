@@ -8,7 +8,8 @@ defmodule OpensourceChallenge.ContributionTest do
     ends_on: %{day: 24, month: 12, year: 2016},
     name: "some challenge",
     shortname: "some-2016",
-    starts_on: %{day: 1, month: 12, year: 2016}
+    starts_on: %{day: 1, month: 12, year: 2016},
+    closed: false
   }
 
   @valid_attrs %{

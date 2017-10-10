@@ -36,8 +36,7 @@ defmodule OpensourceChallenge.ContributionController do
 
   def handle_create(%{assigns: %{current_user: user}}, attributes) do
     attributes = Map.put(attributes, "user_id", user.id)
-    challenge = ChallengeService.latest_challenge
-                |> Repo.one!
+    challenge = Repo.one!(ChallengeService.latest_challenge)
     attributes = Map.put(attributes, "challenge_id", challenge.id)
     ContributionService.create_contribution(attributes)
   end

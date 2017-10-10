@@ -26,7 +26,8 @@ defmodule OpensourceChallenge.ContributionControllerTest do
       name: "Some challenge",
       shortname: "challenge",
       starts_on: %Ecto.Date{year: 2016, month: 12, day: 1},
-      ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
+      ends_on: %Ecto.Date{year: 2016, month: 12, day: 24},
+      closed: false
     })
 
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user)
