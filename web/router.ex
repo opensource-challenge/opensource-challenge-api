@@ -37,7 +37,7 @@ defmodule OpensourceChallenge.Router do
       get "/users", UserController, :index, as: :users
     end
 
-    resources "/users", UserController, only: [:show, :index] do
+    resources "/users", UserController, only: [:show, :index, :update] do
       get "/contributions", ContributionController, :index, as: :contributions
     end
     resources "/contributions", ContributionController, only: [:show, :index]
