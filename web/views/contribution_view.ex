@@ -27,9 +27,7 @@ defmodule OpensourceChallenge.ContributionView do
     challenge_url(conn, :show, contribution.challenge_id)
   end
 
-  def challenge(struct, conn) do
-    IO.inspect struct
-    IO.inspect System.stacktrace
+  def challenge(struct, _conn) do
     case struct.challenge do
       %Ecto.Association.NotLoaded{} ->
         struct

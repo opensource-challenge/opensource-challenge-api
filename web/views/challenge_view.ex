@@ -5,7 +5,8 @@ defmodule OpensourceChallenge.ChallengeView do
     :name,
     :shortname,
     :starts_on,
-    :ends_on
+    :ends_on,
+    :closed,
   ]
 
   has_many :contributions,
@@ -15,5 +16,15 @@ defmodule OpensourceChallenge.ChallengeView do
 
   def contributions_link(challenge, conn) do
     challenge_contributions_url(conn, :index, challenge.id)
+  end
+
+  def contributions(struct, _conn) do
+    case struct.contributions do
+      %Ecto.Association.NotLoaded{} ->
+        struct
+        |> Ecto.assoc(:contributions)
+        |> OpensourceChallenge.Repo.all
+      other -> other
+    end
   end
 end

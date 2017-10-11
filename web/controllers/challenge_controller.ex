@@ -10,12 +10,9 @@ defmodule OpensourceChallenge.ChallengeController do
   alias OpensourceChallenge.ChallengeService
 
   def handle_current(conn, %{"include" => include}) do
-    includes = include
-               |> String.split(",")
-               |> Enum.map(&String.to_atom/1)
     conn
     |> handle_current(%{})
-    |> preload(^includes)
+    |> preload(^parse_include(include))
   end
 
   def handle_current(_conn, _params) do
@@ -29,5 +26,17 @@ defmodule OpensourceChallenge.ChallengeController do
     render(conn, "show.json-api", data: challenge, opts: [
              include: params["include"]
            ])
+  end
+
+  def filter(_conn, query, "closed", closed) do
+    closed = closed == "true"
+
+    where(query, closed: ^closed)
+  end
+
+  defp parse_include(include) do
+    include
+    |> String.split(",")
+    |> Enum.map(&String.to_atom/1)
   end
 end
