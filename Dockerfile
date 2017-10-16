@@ -3,6 +3,7 @@ FROM elixir:1.5
 EXPOSE 8080
 
 RUN useradd -md /usr/src/app -u 1001 phoenix-app
+RUN chown 1001:1001 /usr/src/app
 USER 1001
 
 RUN mix local.hex --force && \
