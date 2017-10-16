@@ -17,7 +17,7 @@ defmodule OpensourceChallenge.ChallengeControllerTest do
   }
 
   setup %{conn: conn} do
-    user = Repo.insert!(User.changeset %User{}, %{
+    user = Repo.insert!(User.create_changeset %User{}, %{
       name: "Damian",
       email: "damian.senn@example.com",
       password: "1234qwer",

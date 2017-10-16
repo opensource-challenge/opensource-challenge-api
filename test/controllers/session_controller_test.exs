@@ -4,7 +4,7 @@ defmodule OpensourceChallenge.SessionControllerTest do
   alias OpensourceChallenge.User
 
   setup %{conn: conn} do
-    Repo.insert(User.changeset %User{}, %{
+    Repo.insert(User.create_changeset %User{}, %{
       name: "Damian",
       email: "damian.senn@example.com",
       password: "1234qwer",

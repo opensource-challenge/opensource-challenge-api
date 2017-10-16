@@ -21,7 +21,34 @@ defmodule OpensourceChallenge.User do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
+  def update_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [
+      :email,
+      :website,
+      :picture,
+      :name,
+      :company,
+      :admin
+    ])
+    |> validate_email
+  end
+
+  def from_github_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [
+      :email,
+      :github_login,
+      :website,
+      :picture,
+      :name,
+      :company,
+      :admin
+    ])
+    |> validate_email
+  end
+
+  def create_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [
       :email,
@@ -35,11 +62,17 @@ defmodule OpensourceChallenge.User do
       :company,
       :admin
     ])
-    |> validate_required([:email, :password, :password_confirmation, :name])
-    |> validate_format(:email, ~r/@/)
+    |> validate_required([:password, :password_confirmation, :name])
+    |> validate_email
     |> validate_length(:password, min: 8)
     |> validate_confirmation(:password)
     |> hash_password
+  end
+
+  defp validate_email(changeset) do
+    changeset
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
   end
 

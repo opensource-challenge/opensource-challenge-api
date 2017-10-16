@@ -59,13 +59,10 @@ defmodule OpensourceChallenge.SessionController do
             email -> email
           end
 
-        dummy_pass = random_pass
-        user = Repo.insert! User.changeset(%User{}, %{
+        user = Repo.insert! User.from_github_changeset(%User{}, %{
           name: github_user["name"] || github_user["login"],
           github_login: github_user["login"],
           email: email,
-          password: dummy_pass,
-          password_confirmation: dummy_pass,
           company: github_user["company"],
           picture: github_user["avatar_url"],
           website: github_user["blog"] || github_user["html_url"]
@@ -135,10 +132,4 @@ defmodule OpensourceChallenge.SessionController do
     throw "Unsupported grant_type #{grant_type}"
   end
 
-  defp random_pass do
-    255
-    |> :crypto.strong_rand_bytes
-    |> Base.url_encode64
-    |> binary_part(0, 255)
-  end
 end

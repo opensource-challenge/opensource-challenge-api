@@ -14,7 +14,7 @@ defmodule OpensourceChallenge.RegistrationController do
           }
         }
       }) do
-    changeset = User.changeset(%User{}, %{
+    changeset = User.create_changeset(%User{}, %{
       name: name,
       email: email,
       password: password,
