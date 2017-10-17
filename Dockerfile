@@ -26,8 +26,7 @@ RUN mix compile && \
 USER root
 
 RUN find /usr/src/app -type d -exec chmod 774 {} \; && \
-    find /usr/src/app -type f -exec chmod 664 {} \; && \
-    rm -rf /usr/src/app/_build/prod/lib/opensource_challenge/priv
+    find /usr/src/app -type f -exec chmod 664 {} \;
 
 USER 1001
 
