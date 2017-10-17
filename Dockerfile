@@ -6,12 +6,12 @@ RUN useradd -md /usr/src/app -u 1001 phoenix-app
 RUN chown 1001:root /usr/src/app
 USER 1001
 
-RUN mix local.hex --force && \
-    mix local.rebar --force
-
 WORKDIR /usr/src/app
 ENV MIX_ENV prod
 ENV HOME /usr/src/app
+
+RUN mix local.hex --force && \
+    mix local.rebar --force
 
 COPY mix.* /usr/src/app/
 # Guardian requires the config files to compile..
