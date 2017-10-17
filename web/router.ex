@@ -1,8 +1,17 @@
 defmodule OpensourceChallenge.Router do
   use OpensourceChallenge.Web, :router
 
+  pipeline :unauthenticated do
+    plug :accepts, ["json", "json-api"]
+  end
+
   pipeline :api do
     plug :accepts, ["json", "json-api"]
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
+    plug OpensourceChallenge.Plug.CurrentUser
+    plug JaSerializer.ContentTypeNegotiation
+    plug JaSerializer.Deserializer
   end
 
   pipeline :api_auth do
@@ -21,19 +30,21 @@ defmodule OpensourceChallenge.Router do
 
     get "/users/current", UserController, :current
 
-    resources "/users", UserController, only: [:show, :index, :update] do
-      get "/contributions", ContributionController, :index, as: :contributions
-    end
+    resources "/users", UserController, only: [:update]
 
     resources "/contributions", ContributionController,
       only: [:create, :update, :delete]
   end
 
   scope "/api/v1", OpensourceChallenge do
-    pipe_through :api
+    pipe_through :unauthenticated
 
     post "/register", RegistrationController, :create
     post "/token", SessionController, :create, as: :login
+  end
+
+  scope "/api/v1", OpensourceChallenge do
+    pipe_through :api
 
     get "/challenges/current", ChallengeController, :current
     resources "/challenges", ChallengeController, only: [:show, :index] do
