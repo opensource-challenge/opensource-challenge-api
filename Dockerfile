@@ -3,7 +3,7 @@ FROM elixir:1.5
 EXPOSE 8080
 
 RUN useradd -md /usr/src/app -u 1001 phoenix-app
-RUN chown 1001:1001 /usr/src/app
+RUN chown 1001:root /usr/src/app
 USER 1001
 
 RUN mix local.hex --force && \
@@ -25,8 +25,8 @@ RUN mix compile && \
 
 USER root
 
-RUN find /usr/src/app -type d -exec chmod 755 {} \; && \
-    find /usr/src/app -type f -exec chmod 644 {} \; && \
+RUN find /usr/src/app -type d -exec chmod 774 {} \; && \
+    find /usr/src/app -type f -exec chmod 664 {} \; && \
     rm -rf /usr/src/app/_build/prod/lib/opensource_challenge/priv
 
 USER 1001
