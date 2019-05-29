@@ -59,8 +59,8 @@ defmodule OpensourceChallenge.ContributionTest do
     assert Keyword.get(changeset.errors, :date) ==
              {"Date must be between 2016-12-01 and 2016-12-24",
               [
-                starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
-                ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
+                starts_on: %Date{year: 2016, month: 12, day: 01},
+                ends_on: %Date{year: 2016, month: 12, day: 24}
               ]}
   end
 
@@ -83,8 +83,8 @@ defmodule OpensourceChallenge.ContributionTest do
     assert Keyword.get(changeset.errors, :date) ==
              {"Date must be between 2016-12-01 and 2016-12-24",
               [
-                starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
-                ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
+                starts_on: %Date{year: 2016, month: 12, day: 01},
+                ends_on: %Date{year: 2016, month: 12, day: 24}
               ]}
   end
 end

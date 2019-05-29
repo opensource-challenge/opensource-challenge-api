@@ -6,7 +6,7 @@ defmodule Github.OAuth2 do
   use OAuth2.Strategy
 
   def client do
-    OAuth2.Client.new([
+    OAuth2.Client.new(
       strategy: __MODULE__,
       client_id: Application.get_env(:oauth2, :github)[:client_id],
       client_secret: Application.get_env(:oauth2, :github)[:client_secret],
@@ -14,7 +14,8 @@ defmodule Github.OAuth2 do
       site: "https://api.github.com",
       authorize_url: "https://github.com/login/oauth/authorize",
       token_url: "https://github.com/login/oauth/access_token"
-    ])
+    )
+    |> OAuth2.Client.put_serializer("application/json", Jason)
   end
 
   def authorize_url! do

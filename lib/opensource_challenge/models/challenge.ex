@@ -1,13 +1,15 @@
 defmodule OpensourceChallenge.Challenge do
-  use OpensourceChallenge.Web, :model
+  use Ecto.Schema
+
+  import Ecto.Changeset
 
   schema "challenges" do
-    field :name, :string
-    field :shortname, :string
-    field :starts_on, Ecto.Date
-    field :ends_on, Ecto.Date
-    field :closed, :boolean
-    has_many :contributions, OpensourceChallenge.Contribution
+    field(:name, :string)
+    field(:shortname, :string)
+    field(:starts_on, :date)
+    field(:ends_on, :date)
+    field(:closed, :boolean)
+    has_many(:contributions, OpensourceChallenge.Contribution)
 
     timestamps()
   end

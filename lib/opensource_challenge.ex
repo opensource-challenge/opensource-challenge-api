@@ -14,7 +14,7 @@ defmodule OpensourceChallenge do
       # Start the Ecto repository
       supervisor(OpensourceChallenge.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(OpensourceChallenge.Endpoint, []),
+      supervisor(OpensourceChallengeWeb.Endpoint, [])
       # Start your own worker by calling:
       # OpensourceChallenge.Worker.start_link(arg1, arg2, arg3)
       # worker(OpensourceChallenge.Worker, [arg1, arg2, arg3]),

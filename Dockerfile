@@ -1,4 +1,4 @@
-FROM elixir:1.5
+FROM elixir:1.8
 
 EXPOSE 8080
 

@@ -1,10 +1,10 @@
-defmodule OpensourceChallenge.ChangesetView do
-  use OpensourceChallenge.Web, :view
+defmodule OpensourceChallengeWeb.ChangesetView do
+  use OpensourceChallengeWeb, :view
 
   @doc """
   Traverses and translates changeset errors.
   See `Ecto.Changeset.traverse_errors/2` and
-  `OpensourceChallenge.ErrorHelpers.translate_error/1` for more details.
+  `OpensourceChallengeWeb.ErrorHelpers.translate_error/1` for more details.
   """
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)

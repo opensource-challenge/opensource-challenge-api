@@ -1,4 +1,4 @@
-defmodule OpensourceChallenge.Plug.CurrentUser do
+defmodule OpensourceChallengeWeb.Plug.CurrentUser do
   def init(opts), do: opts
 
   def call(conn, _opts) do

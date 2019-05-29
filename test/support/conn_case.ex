@@ -1,4 +1,4 @@
-defmodule OpensourceChallenge.ConnCase do
+defmodule OpensourceChallengeWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -27,10 +27,10 @@ defmodule OpensourceChallenge.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import OpensourceChallenge.Router.Helpers
+      import OpensourceChallengeWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint OpensourceChallenge.Endpoint
+      @endpoint OpensourceChallengeWeb.Endpoint
     end
   end
 
