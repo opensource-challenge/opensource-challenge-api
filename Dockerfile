@@ -8,6 +8,7 @@ USER 1001
 
 WORKDIR /usr/src/app
 ENV MIX_ENV prod
+ENV PORT 8080
 ENV HOME /usr/src/app
 
 RUN mix local.hex --force && \
@@ -30,4 +31,4 @@ RUN find /usr/src/app -type d -exec chmod 777 {} \; && \
 
 USER 1001
 
-CMD mix ecto.migrate && elixir -pa _build/prod/consolidated -S mix phoenix.server
+CMD mix ecto.migrate && iex -S mix phx.server
