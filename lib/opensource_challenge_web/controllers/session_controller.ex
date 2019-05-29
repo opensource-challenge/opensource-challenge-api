@@ -18,8 +18,7 @@ defmodule OpensourceChallengeWeb.SessionController do
       if verify_pass(password, user.password_hash) do
         Logger.info("User #{username} just logged in")
 
-        {:ok, jwt, _} =
-          OpensourceChallengeWeb.Guardian.encode_and_sign(user, %{}, token_type: "token")
+        {:ok, jwt, _} = OpensourceChallengeWeb.Guardian.encode_and_sign(user)
 
         conn
         |> json(%{access_token: jwt})
@@ -78,8 +77,7 @@ defmodule OpensourceChallengeWeb.SessionController do
 
       Logger.info("User #{user.email} just logged in")
 
-      {:ok, jwt, _} =
-        OpensourceChallengeWeb.Guardian.encode_and_sign(user, %{}, token_type: "token")
+      {:ok, jwt, _} = OpensourceChallengeWeb.Guardian.encode_and_sign(user)
 
       conn
       |> json(%{access_token: jwt})
