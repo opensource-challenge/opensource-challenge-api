@@ -1,6 +1,7 @@
 defmodule OpensourceChallengeWeb.RegistrationController do
   use OpensourceChallengeWeb, :controller
 
+  alias OpensourceChallenge.Repo
   alias OpensourceChallenge.User
 
   def create(conn, %{
