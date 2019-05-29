@@ -1,8 +1,8 @@
-defmodule OpensourceChallenge.SessionController do
-  use OpensourceChallenge.Web, :controller
+defmodule OpensourceChallengeWeb.SessionController do
+  use OpensourceChallengeWeb, :controller
 
-  import Ecto.Query, only: [where: 2, where: 3]
-  import Comeonin.Bcrypt
+  import Ecto.Query, only: [where: 2]
+  import Bcrypt, only: [verify_pass: 2]
   import Logger
 
   alias OpensourceChallenge.User
@@ -13,74 +13,87 @@ defmodule OpensourceChallenge.SessionController do
         "password" => password
       }) do
     try do
-      user = User
-             |> where(email: ^username)
-             |> Repo.one!
-      cond do
-        checkpw(password, user.password_hash) ->
-          Logger.info "User #{username} just logged in"
+      user = Repo.get_by!(User, email: username)
 
-          {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
-          conn
-          |> json(%{access_token: jwt})
-        true ->
-          Logger.warn "User #{username} just failed to login"
-          conn
-          |> put_status(401)
-          |> render(OpensourceChallenge.ErrorView, "401.json")
+      if verify_pass(password, user.password_hash) do
+        Logger.info("User #{username} just logged in")
+
+        {:ok, jwt, _} =
+          OpensourceChallengeWeb.Guardian.encode_and_sign(user, %{}, token_type: "token")
+
+        conn
+        |> json(%{access_token: jwt})
+      else
+        Logger.warn("User #{username} just failed to login")
+
+        conn
+        |> put_status(401)
+        |> render(OpensourceChallengeWeb.ErrorView, "401.json")
       end
     rescue
       e ->
-        IO.inspect e
-        Logger.error "Unexpected error while attempting to login #{username}"
+        IO.inspect(e)
+        Logger.error("Unexpected error while attempting to login #{username}")
+
         conn
         |> put_status(401)
-        |> render(OpensourceChallenge.ErrorView, "401.json")
+        |> render(OpensourceChallengeWeb.ErrorView, "401.json")
     end
   end
 
   def create(conn, %{
         "grant_type" => "github",
-        "authorizationCode" => authorization_code,
+        "authorizationCode" => authorization_code
       }) do
     try do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
-      user = User
-             |> where(github_login: ^github_user["login"])
-             |> Repo.one
+
+      user =
+        User
+        |> where(github_login: ^github_user["login"])
+        |> Repo.one()
 
       unless user do
         email =
           case github_user["email"] do
-            nil -> OAuth2.Client.get!(client, "/user/emails").body
-                   |> Enum.find(fn(email) -> email["primary"] end)
-                   |> Map.fetch!("email")
-            email -> email
+            nil ->
+              OAuth2.Client.get!(client, "/user/emails").body
+              |> Enum.find(fn email -> email["primary"] end)
+              |> Map.fetch!("email")
+
+            email ->
+              email
           end
 
-        user = Repo.insert! User.from_github_changeset(%User{}, %{
-          name: github_user["name"] || github_user["login"],
-          github_login: github_user["login"],
-          email: email,
-          company: github_user["company"],
-          picture: github_user["avatar_url"],
-          website: github_user["blog"] || github_user["html_url"]
-        })
+        user =
+          Repo.insert!(
+            User.from_github_changeset(%User{}, %{
+              name: github_user["name"] || github_user["login"],
+              github_login: github_user["login"],
+              email: email,
+              company: github_user["company"],
+              picture: github_user["avatar_url"],
+              website: github_user["blog"] || github_user["html_url"]
+            })
+          )
       end
 
-      Logger.info "User #{user.email} just logged in"
+      Logger.info("User #{user.email} just logged in")
 
-      {:ok, jwt, _} = Guardian.encode_and_sign(user, :token)
+      {:ok, jwt, _} =
+        OpensourceChallengeWeb.Guardian.encode_and_sign(user, %{}, token_type: "token")
+
       conn
       |> json(%{access_token: jwt})
     rescue
       e ->
-        IO.inspect e
-        Logger.error "Unexpected error while attempting to login with github"
+        IO.inspect(e)
+        Logger.error("Unexpected error while attempting to login with github")
+
         conn
         |> put_status(401)
-        |> render(OpensourceChallenge.ErrorView, "401.json")
+        |> render(OpensourceChallengeWeb.ErrorView, "401.json")
     end
   end
 
@@ -124,12 +137,11 @@ defmodule OpensourceChallenge.SessionController do
   #       Logger.error "Unexpected error while attempting to login with google"
   #       conn
   #       |> put_status(401)
-  #       |> render(OpensourceChallenge.ErrorView, "401.json")
+  #       |> render(OpensourceChallengeWeb.ErrorView, "401.json")
   #   end
   # end
 
   def create(_conn, %{"grant_type" => grant_type}) do
-    throw "Unsupported grant_type #{grant_type}"
+    throw("Unsupported grant_type #{grant_type}")
   end
-
 end

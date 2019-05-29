@@ -1,5 +1,5 @@
-defmodule OpensourceChallenge.RegistrationController do
-  use OpensourceChallenge.Web, :controller
+defmodule OpensourceChallengeWeb.RegistrationController do
+  use OpensourceChallengeWeb, :controller
 
   alias OpensourceChallenge.User
 
@@ -14,24 +14,24 @@ defmodule OpensourceChallenge.RegistrationController do
           }
         }
       }) do
-    changeset = User.create_changeset(%User{}, %{
-      name: name,
-      email: email,
-      password: password,
-      password_confirmation: password_confirmation
-    })
+    changeset =
+      User.create_changeset(%User{}, %{
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: password_confirmation
+      })
 
-    case Repo.insert changeset do
+    case Repo.insert(changeset) do
       {:ok, user} ->
         conn
         |> put_status(:created)
-        |> render(OpensourceChallenge.UserView, "show.json-api", data: user)
+        |> render(OpensourceChallengeWeb.UserView, "show.json-api", data: user)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(OpensourceChallenge.ChangesetView, "error.json",
-          changeset: changeset
-        )
+        |> render(OpensourceChallengeWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 end

@@ -1,19 +1,22 @@
 defmodule OpensourceChallenge.User do
-  use OpensourceChallenge.Web, :model
+  use Ecto.Schema
+
+  import Ecto.Changeset
+  import Bcrypt, only: [hash_pwd_salt: 1]
 
   schema "users" do
-    field :email, :string
-    field :github_login, :string
-    field :google_login, :string
-    field :password_hash, :string
-    field :website, :string
-    field :picture, :string
-    field :name, :string
-    field :company, :string
-    field :admin, :boolean
+    field(:email, :string)
+    field(:github_login, :string)
+    field(:google_login, :string)
+    field(:password_hash, :string)
+    field(:website, :string)
+    field(:picture, :string)
+    field(:name, :string)
+    field(:company, :string)
+    field(:admin, :boolean)
 
-    field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field(:password, :string, virtual: true)
+    field(:password_confirmation, :string, virtual: true)
 
     timestamps()
   end
@@ -77,11 +80,9 @@ defmodule OpensourceChallenge.User do
   end
 
   defp hash_password(%{valid?: false} = changeset), do: changeset
-  defp hash_password(%{valid?: true} = changeset) do
-    hashed_pw = Comeonin.Bcrypt.hashpwsalt(
-      Ecto.Changeset.get_field(changeset, :password)
-    )
 
+  defp hash_password(%{valid?: true} = changeset) do
+    hashed_pw = hash_pwd_salt(Ecto.Changeset.get_field(changeset, :password))
     Ecto.Changeset.put_change(changeset, :password_hash, hashed_pw)
   end
 end

@@ -1,18 +1,19 @@
-defmodule OpensourceChallenge.ChallengeView do
-  use OpensourceChallenge.Web, :view
+defmodule OpensourceChallengeWeb.ChallengeView do
+  use OpensourceChallengeWeb, :view
 
-  attributes [
+  attributes([
     :name,
     :shortname,
     :starts_on,
     :ends_on,
-    :closed,
-  ]
+    :closed
+  ])
 
-  has_many :contributions,
-    serializer: OpensourceChallenge.ContributionView,
+  has_many(:contributions,
+    serializer: OpensourceChallengeWeb.ContributionView,
     identifiers: :when_included,
     link: :contributions_link
+  )
 
   def contributions_link(challenge, conn) do
     challenge_contributions_url(conn, :index, challenge.id)
@@ -23,8 +24,10 @@ defmodule OpensourceChallenge.ChallengeView do
       %Ecto.Association.NotLoaded{} ->
         struct
         |> Ecto.assoc(:contributions)
-        |> OpensourceChallenge.Repo.all
-      other -> other
+        |> OpensourceChallenge.Repo.all()
+
+      other ->
+        other
     end
   end
 end

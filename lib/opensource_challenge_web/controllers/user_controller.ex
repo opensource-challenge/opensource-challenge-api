@@ -1,16 +1,19 @@
-defmodule OpensourceChallenge.UserController do
-  use OpensourceChallenge.Web, :controller
+defmodule OpensourceChallengeWeb.UserController do
+  use OpensourceChallengeWeb, :controller
 
   alias OpensourceChallenge.User
 
-  plug JaResource
+  plug(JaResource)
+
+  def model, do: OpensourceChallenge.User
 
   def current(conn, _) do
-    user = conn
-           |> Guardian.Plug.current_resource
+    user =
+      conn
+      |> Guardian.Plug.current_resource()
 
     conn
-    |> render(OpensourceChallenge.UserView, "show.json-api", data: user)
+    |> render(OpensourceChallengeWeb.UserView, "show.json-api", data: user)
   end
 
   def handle_update(_conn, user, attrs) do

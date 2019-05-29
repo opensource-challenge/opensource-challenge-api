@@ -1,20 +1,26 @@
-defmodule OpensourceChallenge.ContributionController do
-  use OpensourceChallenge.Web, :controller
+defmodule OpensourceChallengeWeb.ContributionController do
+  use OpensourceChallengeWeb, :controller
 
   alias OpensourceChallenge.ChallengeService
   alias OpensourceChallenge.Contribution
   alias OpensourceChallenge.ContributionService
 
-  plug :scrub_params, "data" when action in [:create, :update]
-  plug :authorize_resource,
+  plug(:scrub_params, "data" when action in [:create, :update])
+
+  plug(:authorize_resource,
     model: Contribution,
     except: [:show, :index, :create]
-  plug JaResource
+  )
+
+  plug(JaResource)
+
+  def model, do: OpensourceChallenge.Contribution
 
   def handle_index(_conn, %{"include" => include}) do
-    includes = include
-               |> String.split(",")
-               |> Enum.map(&String.to_atom/1)
+    includes =
+      include
+      |> String.split(",")
+      |> Enum.map(&String.to_atom/1)
 
     Contribution
     |> preload(^includes)
@@ -36,7 +42,7 @@ defmodule OpensourceChallenge.ContributionController do
 
   def handle_create(%{assigns: %{current_user: user}}, attributes) do
     attributes = Map.put(attributes, "user_id", user.id)
-    challenge = Repo.one!(ChallengeService.latest_challenge)
+    challenge = Repo.one!(ChallengeService.latest_challenge())
     attributes = Map.put(attributes, "challenge_id", challenge.id)
     ContributionService.create_contribution(attributes)
   end

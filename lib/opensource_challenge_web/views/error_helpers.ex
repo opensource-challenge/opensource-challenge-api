@@ -1,9 +1,9 @@
-defmodule OpensourceChallenge.ErrorHelpers do
+defmodule OpensourceChallengeWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
 
-  alias OpensourceChallenge.Gettext
+  alias OpensourceChallengeWeb.Gettext
 
   @doc """
   Translates an error message using gettext.

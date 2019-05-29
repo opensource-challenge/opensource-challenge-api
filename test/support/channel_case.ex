@@ -1,4 +1,4 @@
-defmodule OpensourceChallenge.ChannelCase do
+defmodule OpensourceChallengeWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,9 +27,8 @@ defmodule OpensourceChallenge.ChannelCase do
       import Ecto.Changeset
       import Ecto.Query
 
-
       # The default endpoint for testing
-      @endpoint OpensourceChallenge.Endpoint
+      @endpoint OpensourceChallengeWeb.Endpoint
     end
   end
 

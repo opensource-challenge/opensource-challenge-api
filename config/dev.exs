@@ -6,13 +6,12 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :opensource_challenge, OpensourceChallenge.Endpoint,
+config :opensource_challenge, OpensourceChallengeWeb.Endpoint,
   http: [port: 4000],
   debug_errors: false,
   code_reloader: true,
   check_origin: false,
   watchers: []
-
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -30,5 +29,4 @@ config :opensource_challenge, OpensourceChallenge.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :opensource_challenge, :cors,
-  origin: "*"
+config :opensource_challenge, :cors, origin: "*"

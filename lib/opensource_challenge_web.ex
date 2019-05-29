@@ -1,4 +1,4 @@
-defmodule OpensourceChallenge.Web do
+defmodule OpensourceChallengeWeb do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
@@ -16,19 +16,9 @@ defmodule OpensourceChallenge.Web do
   below.
   """
 
-  def model do
-    quote do
-      use Ecto.Schema
-
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-    end
-  end
-
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: OpensourceChallengeWeb
       use JaResource
 
       alias OpensourceChallenge.Repo
@@ -36,8 +26,8 @@ defmodule OpensourceChallenge.Web do
       import Ecto.Query
       import Canary.Plugs
 
-      import OpensourceChallenge.Router.Helpers
-      import OpensourceChallenge.Gettext
+      import OpensourceChallengeWeb.Router.Helpers
+      import OpensourceChallengeWeb.Gettext
     end
   end
 
@@ -46,15 +36,16 @@ defmodule OpensourceChallenge.Web do
       use JaSerializer.PhoenixView
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [
-        get_csrf_token: 0,
-        get_flash: 2,
-        view_module: 1
-      ]
+      import Phoenix.Controller,
+        only: [
+          get_csrf_token: 0,
+          get_flash: 2,
+          view_module: 1
+        ]
 
-      import OpensourceChallenge.Router.Helpers
-      import OpensourceChallenge.ErrorHelpers
-      import OpensourceChallenge.Gettext
+      import OpensourceChallengeWeb.Router.Helpers
+      import OpensourceChallengeWeb.ErrorHelpers
+      import OpensourceChallengeWeb.Gettext
     end
   end
 
@@ -71,7 +62,7 @@ defmodule OpensourceChallenge.Web do
       alias OpensourceChallenge.Repo
       import Ecto
       import Ecto.Query
-      import OpensourceChallenge.Gettext
+      import OpensourceChallengeWeb.Gettext
     end
   end
 

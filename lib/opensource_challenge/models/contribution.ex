@@ -1,7 +1,8 @@
 defmodule OpensourceChallenge.Contribution do
-  use OpensourceChallenge.Web, :model
+  use Ecto.Schema
 
-  alias Ecto.Date
+  import Ecto.Changeset
+
   alias Ecto.Changeset
   alias OpensourceChallenge.Repo
   alias OpensourceChallenge.User
@@ -9,7 +10,7 @@ defmodule OpensourceChallenge.Contribution do
 
   schema "contributions" do
     field(:title, :string)
-    field(:date, Date)
+    field(:date, :date)
     field(:link, :string)
     field(:description, :string)
     belongs_to(:user, User)
@@ -58,7 +59,7 @@ defmodule OpensourceChallenge.Contribution do
     date = Changeset.get_field(changeset, :date)
 
     if date do
-      case Date.compare(date, Date.from_erl(:erlang.date())) do
+      case Date.compare(date, Date.from_erl!(:erlang.date())) do
         :gt -> add_error(changeset, :date, "Date cannot be in the future")
         _ -> changeset
       end
