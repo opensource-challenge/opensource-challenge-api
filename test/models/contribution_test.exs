@@ -22,8 +22,9 @@ defmodule OpensourceChallenge.ContributionTest do
   @invalid_attrs %{}
 
   setup do
-    challenge = Challenge.changeset(%Challenge{}, @challenge_attrs)
-                |> Repo.insert!
+    challenge =
+      Challenge.changeset(%Challenge{}, @challenge_attrs)
+      |> Repo.insert!()
 
     {:ok, challenge: challenge}
   end
@@ -40,36 +41,50 @@ defmodule OpensourceChallenge.ContributionTest do
   end
 
   test "changeset date after challenge", %{challenge: challenge} do
-    changeset = Contribution.changeset(%Contribution{}, %{
-                                         challenge_id: challenge.id,
-                                         date: %{
-                                           day: 25,
-                                           month: 12,
-                                           year: 2015
-                                         }
-                                       })
+    changeset =
+      Contribution.changeset(%Contribution{}, %{
+        title: "Some contribution",
+        description: "Some description",
+        user_id: 1,
+        challenge_id: challenge.id,
+        date: %{
+          day: 25,
+          month: 12,
+          year: 2015
+        }
+      })
+
     assert Keyword.has_key?(changeset.errors, :date)
+
     assert Keyword.get(changeset.errors, :date) ==
-      {"Date must be between 2016-12-01 and 2016-12-24", [
-          starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
-          ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
-        ]}
+             {"Date must be between 2016-12-01 and 2016-12-24",
+              [
+                starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
+                ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
+              ]}
   end
 
   test "changeset date before challenge", %{challenge: challenge} do
-    changeset = Contribution.changeset(%Contribution{}, %{
-                                         challenge_id: challenge.id,
-                                         date: %{
-                                           day: 30,
-                                           month: 11,
-                                           year: 2015
-                                         }
-                                       })
+    changeset =
+      Contribution.changeset(%Contribution{}, %{
+        title: "Some contribution",
+        description: "Some description",
+        user_id: 1,
+        challenge_id: challenge.id,
+        date: %{
+          day: 30,
+          month: 11,
+          year: 2015
+        }
+      })
+
     assert Keyword.has_key?(changeset.errors, :date)
+
     assert Keyword.get(changeset.errors, :date) ==
-      {"Date must be between 2016-12-01 and 2016-12-24", [
-          starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
-          ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
-        ]}
+             {"Date must be between 2016-12-01 and 2016-12-24",
+              [
+                starts_on: %Ecto.Date{year: 2016, month: 12, day: 01},
+                ends_on: %Ecto.Date{year: 2016, month: 12, day: 24}
+              ]}
   end
 end
