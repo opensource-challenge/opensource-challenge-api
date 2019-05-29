@@ -1,10 +1,11 @@
 defmodule OpensourceChallengeWeb.ChallengeController do
   use OpensourceChallengeWeb, :controller
 
+  import Ecto.Query, only: [where: 2, preload: 2]
+
   plug(JaResource)
 
-  import Ecto.Query
-
+  alias OpensourceChallenge.Repo
   alias OpensourceChallenge.ChallengeService
 
   def model, do: OpensourceChallenge.Challenge

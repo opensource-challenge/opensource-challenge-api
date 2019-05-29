@@ -24,6 +24,6 @@ defmodule OpensourceChallengeWeb.UserView do
   def admin(_user, _conn), do: nil
 
   def contributions_link(user, conn) do
-    user_contributions_url(conn, :index, user.id)
+    Routes.user_contributions_url(conn, :index, user.id)
   end
 end

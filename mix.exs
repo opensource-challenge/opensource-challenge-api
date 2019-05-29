@@ -22,14 +22,8 @@ defmodule OpensourceChallenge.Mixfile do
   def application do
     [
       mod: {OpensourceChallenge, []},
-      applications: [
-        :phoenix,
-        :phoenix_pubsub,
-        :cowboy,
+      extra_applications: [
         :logger,
-        :gettext,
-        :phoenix_ecto,
-        :postgrex,
         :comeonin,
         :oauth2,
         :ja_resource
@@ -47,7 +41,7 @@ defmodule OpensourceChallenge.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.4.6"},
-      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 3.3"},
       {:jason, "~> 1.1"},
       {:postgrex, "~> 0.13.5"},
@@ -58,8 +52,8 @@ defmodule OpensourceChallenge.Mixfile do
       {:canada, "~> 2.0.0", override: true},
       {:canary, "~> 1.1.0"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
-      {:oauth2, "~> 0.8"},
+      {:plug_cowboy, "~> 2.0"},
+      {:oauth2, "~> 1.0"},
       {:cors_plug, "~> 2.0.0"},
       {:coverex, "~> 1.5.0", only: :test}
     ]

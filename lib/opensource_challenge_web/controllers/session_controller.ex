@@ -1,10 +1,10 @@
 defmodule OpensourceChallengeWeb.SessionController do
   use OpensourceChallengeWeb, :controller
 
-  import Ecto.Query, only: [where: 2]
   import Bcrypt, only: [verify_pass: 2]
   import Logger
 
+  alias OpensourceChallenge.Repo
   alias OpensourceChallenge.User
 
   def create(conn, %{
@@ -49,10 +49,7 @@ defmodule OpensourceChallengeWeb.SessionController do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
 
-      user =
-        User
-        |> where(github_login: ^github_user["login"])
-        |> Repo.one()
+      user = Repo.get_by!(User, github_login: github_user["login"])
 
       unless user do
         email =

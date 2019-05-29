@@ -22,11 +22,11 @@ defmodule OpensourceChallengeWeb.ContributionView do
   )
 
   def user_link(contribution, conn) do
-    user_url(conn, :show, contribution.user_id)
+    Routes.user_url(conn, :show, contribution.user_id)
   end
 
   def challenge_link(contribution, conn) do
-    challenge_url(conn, :show, contribution.challenge_id)
+    Routes.challenge_url(conn, :show, contribution.challenge_id)
   end
 
   def challenge(struct, _conn) do

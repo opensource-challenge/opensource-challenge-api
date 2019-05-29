@@ -1,7 +1,10 @@
 defmodule OpensourceChallengeWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :opensource_challenge
 
-  socket("/socket", OpensourceChallengeWeb.UserSocket)
+  socket("/socket", OpensourceChallengeWeb.UserSocket,
+    websocket: true,
+    longpoll: false
+  )
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -26,7 +29,7 @@ defmodule OpensourceChallengeWeb.Endpoint do
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Jason
+    json_decoder: Phoenix.json_library()
   )
 
   plug(Plug.MethodOverride)

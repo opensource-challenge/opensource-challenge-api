@@ -1,6 +1,9 @@
 defmodule OpensourceChallengeWeb.ContributionController do
   use OpensourceChallengeWeb, :controller
 
+  import Ecto.Query, only: [where: 2, preload: 2]
+
+  alias OpensourceChallenge.Repo
   alias OpensourceChallenge.ChallengeService
   alias OpensourceChallenge.Contribution
   alias OpensourceChallenge.ContributionService

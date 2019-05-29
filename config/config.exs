@@ -11,6 +11,12 @@ config :opensource_challenge,
 
 config :postgrex, :json_library, Jason
 
+config :phoenix, :json_library, Jason
+
+config :phoenix, :format_encoders,
+  json: Jason,
+  "json-api": Jason
+
 # Configures the endpoint
 config :opensource_challenge, OpensourceChallengeWeb.Endpoint,
   url: [host: "localhost"],
@@ -25,10 +31,6 @@ config :opensource_challenge, OpensourceChallengeWeb.Endpoint,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
-
-config :phoenix, :format_encoders,
-  json: Jason,
-  "json-api": Jason
 
 config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]

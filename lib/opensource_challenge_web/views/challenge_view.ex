@@ -16,7 +16,7 @@ defmodule OpensourceChallengeWeb.ChallengeView do
   )
 
   def contributions_link(challenge, conn) do
-    challenge_contributions_url(conn, :index, challenge.id)
+    Routes.challenge_contributions_url(conn, :index, challenge.id)
   end
 
   def contributions(struct, _conn) do
