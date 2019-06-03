@@ -21,5 +21,6 @@ defmodule OpensourceChallenge.Challenge do
     struct
     |> cast(params, [:name, :shortname, :starts_on, :ends_on, :closed])
     |> validate_required([:name, :shortname, :starts_on, :ends_on, :closed])
+    |> validate_format(:shortname, ~r/[a-z\d\-]/)
   end
 end

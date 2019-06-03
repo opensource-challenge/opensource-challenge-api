@@ -27,7 +27,7 @@ defmodule OpensourceChallengeWeb.Router do
     get("/users/current", UserController, :current)
 
     resources("/users", UserController, only: [:update])
-
+    resources("/challenges", ChallengeController, only: [:create, :update])
     resources("/contributions", ContributionController, only: [:create, :update, :delete])
   end
 

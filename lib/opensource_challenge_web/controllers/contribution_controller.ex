@@ -12,7 +12,7 @@ defmodule OpensourceChallengeWeb.ContributionController do
 
   plug(:authorize_resource,
     model: Contribution,
-    except: [:show, :index, :create]
+    except: [:show, :index]
   )
 
   plug(JaResource)

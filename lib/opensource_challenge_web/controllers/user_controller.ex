@@ -3,9 +3,14 @@ defmodule OpensourceChallengeWeb.UserController do
 
   alias OpensourceChallenge.User
 
+  plug(:authorize_resource,
+    model: User,
+    except: [:show, :index, :current]
+  )
+
   plug(JaResource)
 
-  def model, do: OpensourceChallenge.User
+  def model, do: User
 
   def current(conn, _) do
     user =
