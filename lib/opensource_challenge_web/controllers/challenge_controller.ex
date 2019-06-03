@@ -3,12 +3,20 @@ defmodule OpensourceChallengeWeb.ChallengeController do
 
   import Ecto.Query, only: [where: 2, preload: 2]
 
-  plug(JaResource)
-
   alias OpensourceChallenge.Repo
+  alias OpensourceChallenge.Challenge
   alias OpensourceChallenge.ChallengeService
 
-  def model, do: OpensourceChallenge.Challenge
+  plug(:scrub_params, "data" when action in [:create, :update])
+
+  plug(:authorize_resource,
+    model: Challenge,
+    except: [:show, :index, :current]
+  )
+
+  plug(JaResource)
+
+  def model, do: Challenge
 
   def handle_current(conn, %{"include" => include}) do
     conn
