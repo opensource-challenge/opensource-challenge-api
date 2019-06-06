@@ -18,9 +18,16 @@ defmodule OpensourceChallengeWeb.ChallengeController do
 
   def model, do: Challenge
 
-  def handle_current(conn, %{"include" => include}) do
+  def records(%Plug.Conn{query_params: %{"include" => include}} = conn) do
+    model()
+    |> preload(^parse_include(include))
+  end
+
+  def records(_conn), do: model()
+
+  def handle_current(conn, %{"include" => include} = opts) do
     conn
-    |> handle_current(%{})
+    |> handle_current(Map.delete(opts, "include"))
     |> preload(^parse_include(include))
   end
 
@@ -51,6 +58,17 @@ defmodule OpensourceChallengeWeb.ChallengeController do
   defp parse_include(include) do
     include
     |> String.split(",")
-    |> Enum.map(&String.to_atom/1)
+    |> Enum.map(fn str ->
+      if String.contains?(str, ".") do
+        [a, b] =
+          str
+          |> String.split(".")
+          |> Enum.map(&String.to_atom/1)
+
+        [{a, b}]
+      else
+        String.to_atom(str)
+      end
+    end)
   end
 end
