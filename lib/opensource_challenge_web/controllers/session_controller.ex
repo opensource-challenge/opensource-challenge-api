@@ -48,7 +48,7 @@ defmodule OpensourceChallengeWeb.SessionController do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
 
-      user = Repo.get_by!(User, github_login: github_user["login"])
+      user = Repo.get_by(User, github_login: github_user["login"])
 
       unless user do
         email =
