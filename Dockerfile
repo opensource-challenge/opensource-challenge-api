@@ -17,6 +17,11 @@ RUN mix local.hex --force && \
 COPY mix.* /usr/src/app/
 # Guardian requires the config files to compile..
 COPY config/* /usr/src/app/config/
+
+USER root
+RUN chown 1001:root /usr/src/app/mix.*
+USER 1001
+
 RUN mix deps.get --only prod && \
     mix deps.compile --only prod
 
