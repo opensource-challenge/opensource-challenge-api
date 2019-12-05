@@ -62,17 +62,19 @@ defmodule OpensourceChallengeWeb.SessionController do
               email
           end
 
-        user =
-          Repo.insert!(
-            User.from_github_changeset(%User{}, %{
-              name: github_user["name"] || github_user["login"],
-              github_login: github_user["login"],
-              email: email,
-              company: github_user["company"],
-              picture: github_user["avatar_url"],
-              website: github_user["blog"] || github_user["html_url"]
-            })
-          )
+        Repo.insert!(
+          User.from_github_changeset(%User{}, %{
+            name: github_user["name"] || github_user["login"],
+            github_login: github_user["login"],
+            email: email,
+            company: github_user["company"],
+            picture: github_user["avatar_url"],
+            website: github_user["blog"] || github_user["html_url"]
+          })
+        )
+        Logger.info("User #{user.email} just created")
+
+        user = Repo.get_by(User, github_login: github_user["login"])
       end
 
       Logger.info("User #{user.email} just logged in")
