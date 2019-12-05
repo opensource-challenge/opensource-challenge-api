@@ -45,7 +45,38 @@ defmodule OpensourceChallengeWeb.SessionController do
         "authorizationCode" => authorization_code
       }) do
     try do
-      user = find_or_create_user(authorization_code)
+      client = Github.OAuth2.get_token!(code: authorization_code)
+      github_user = OAuth2.Client.get!(client, "/user").body
+
+      user = Repo.get_by(User, github_login: github_user["login"])
+
+      unless user do
+        email =
+          case github_user["email"] do
+            nil ->
+              OAuth2.Client.get!(client, "/user/emails").body
+              |> Enum.find(fn email -> email["primary"] end)
+              |> Map.fetch!("email")
+
+            email ->
+              email
+          end
+
+        Repo.insert!(
+          User.from_github_changeset(%User{}, %{
+            name: github_user["name"] || github_user["login"],
+            github_login: github_user["login"],
+            email: email,
+            company: github_user["company"],
+            picture: github_user["avatar_url"],
+            website: github_user["blog"] || github_user["html_url"]
+          })
+        )
+
+        user = Repo.get_by(User, github_login: github_user["login"])
+        Logger.info("User #{user.email} just created")
+      end
+
       Logger.info("User #{user.email} just logged in")
 
       {:ok, jwt, _} = OpensourceChallengeWeb.Guardian.encode_and_sign(user)
@@ -109,54 +140,5 @@ defmodule OpensourceChallengeWeb.SessionController do
 
   def create(_conn, %{"grant_type" => grant_type}) do
     throw("Unsupported grant_type #{grant_type}")
-  end
-
-  defp find_or_create_user(auth_code) do
-    with github_user                <- github_user(auth_code),
-         user when not is_nil(user) <- find_user(github_user["login"])
-    do
-      user
-    else
-      _ -> create_user(auth_code)
-    end
-  end
-
-  defp github_user(auth_code) do
-    with client      <- client(auth_code),
-         github_user <- OAuth2.Client.get!(client, "/user").body,
-    do: github_user
-  end
-
-  defp client(auth_code), do: Github.OAuth2.get_token!(code: auth_code)
-
-  defp find_user(login), do: Repo.get_by(User, github_login: login)
-
-  defp create_user(auth_code) do
-    github_user = github_user(auth_code)
-    client = client(auth_code)
-    email =
-      case github_user["email"] do
-        nil ->
-          OAuth2.Client.get!(client, "/user/emails").body
-          |> Enum.find(fn email -> email["primary"] end)
-          |> Map.fetch!("email")
-
-        email ->
-          email
-      end
-    Repo.insert!(
-      User.from_github_changeset(%User{}, %{
-        name: github_user["name"] || github_user["login"],
-        github_login: github_user["login"],
-        email: email,
-        company: github_user["company"],
-        picture: github_user["avatar_url"],
-        website: github_user["blog"] || github_user["html_url"]
-      })
-    )
-    user = Repo.get_by(User, github_login: github_user["login"])
-    Logger.info("User #{user.email} just created")
-
-    user
   end
 end
