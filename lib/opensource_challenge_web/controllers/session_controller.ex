@@ -72,9 +72,9 @@ defmodule OpensourceChallengeWeb.SessionController do
             website: github_user["blog"] || github_user["html_url"]
           })
         )
-        Logger.info("User #{user.email} just created")
 
         user = Repo.get_by(User, github_login: github_user["login"])
+        Logger.info("User #{user.email} just created")
       end
 
       Logger.info("User #{user.email} just logged in")
