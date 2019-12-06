@@ -75,6 +75,7 @@ defmodule OpensourceChallengeWeb.SessionController do
 
             user = Repo.get_by(User, github_login: github_user["login"])
             Logger.info("User #{user.email} just created")
+            user
 
           user ->
             user
