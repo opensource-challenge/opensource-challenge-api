@@ -48,32 +48,38 @@ defmodule OpensourceChallengeWeb.SessionController do
       client = Github.OAuth2.get_token!(code: authorization_code)
       github_user = OAuth2.Client.get!(client, "/user").body
 
-      user = Repo.get_by(User, github_login: github_user["login"])
+      user =
+        case Repo.get_by(User, github_login: github_user["login"]) do
+          nil  ->
+            email =
+              case github_user["email"] do
+                nil ->
+                  OAuth2.Client.get!(client, "/user/emails").body
+                  |> Enum.find(fn email -> email["primary"] end)
+                  |> Map.fetch!("email")
 
-      unless user do
-        email =
-          case github_user["email"] do
-            nil ->
-              OAuth2.Client.get!(client, "/user/emails").body
-              |> Enum.find(fn email -> email["primary"] end)
-              |> Map.fetch!("email")
+                email ->
+                  email
+              end
 
-            email ->
-              email
-          end
+            Repo.insert!(
+              User.from_github_changeset(%User{}, %{
+                    name: github_user["name"] || github_user["login"],
+                    github_login: github_user["login"],
+                    email: email,
+                    company: github_user["company"],
+                    picture: github_user["avatar_url"],
+                    website: github_user["blog"] || github_user["html_url"]
+                                         })
+            )
 
-        user =
-          Repo.insert!(
-            User.from_github_changeset(%User{}, %{
-              name: github_user["name"] || github_user["login"],
-              github_login: github_user["login"],
-              email: email,
-              company: github_user["company"],
-              picture: github_user["avatar_url"],
-              website: github_user["blog"] || github_user["html_url"]
-            })
-          )
-      end
+            user = Repo.get_by(User, github_login: github_user["login"])
+            Logger.info("User #{user.email} just created")
+            user
+
+          user ->
+            user
+        end
 
       Logger.info("User #{user.email} just logged in")
 
